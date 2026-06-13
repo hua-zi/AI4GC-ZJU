@@ -3507,6 +3507,34 @@ article.member-card.member-card--has-profile {
   border-color: color-mix(in srgb, var(--color-brand) 32%, var(--color-divider));
 }
 
+/* "Full list also on Scholar / DBLP" row above the toolbar */
+.publications-also-on {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin: 0 0 var(--space-5);
+  color: var(--color-muted-text);
+  font-size: var(--text-sm);
+}
+
+.publications-also-on__label {
+  font-weight: 500;
+}
+
+.publications-also-on__link {
+  color: var(--color-brand);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.publications-also-on__link:hover,
+.publications-also-on__link:focus-visible {
+  color: var(--color-brand-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 /* Publications toolbar: search + filters */
 .publications-toolbar {
   display: flex;

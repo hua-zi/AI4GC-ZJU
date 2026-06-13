@@ -15,6 +15,12 @@ schoolName: Zhejiang University
 schoolHref: https://www.zju.edu.cn/english/
 favicon: /content-assets/site/favicon.jpeg
 
+# PI scholarly profiles — shown on /publications and in the footer.
+# dblpPid is the DBLP author id used by scripts/sync-dblp.mjs (npm run pubs:sync).
+scholarUrl: https://scholar.google.com/citations?user=l4Dyt7EAAAAJ
+dblpUrl: https://dblp.org/pid/47/3459-1.html
+dblpPid: 47/3459-1
+
 featuredNewsCount: 4
 newsPageVisibleCount: 12
 blogPageVisibleCount: 10
@@ -36,6 +42,12 @@ footer:
   externalLinks:
     - label: Prof. Shengyu Zhang
       href: https://person.zju.edu.cn/shengyuzhang
+      external: true
+    - label: Google Scholar
+      href: https://scholar.google.com/citations?user=l4Dyt7EAAAAJ
+      external: true
+    - label: DBLP
+      href: https://dblp.org/pid/47/3459-1.html
       external: true
 
 pages:

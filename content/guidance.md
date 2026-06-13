@@ -158,6 +158,9 @@ Slug 逻辑：`src/lib/content/slug.ts`。
 | `schoolName`           | string        | `Zhejiang University`               | 学校名称                                         |
 | `schoolHref`           | string        | ZJU 英文站 URL                         | 学校链接                                         |
 | `favicon`              | string        | `/content-assets/site/favicon.jpeg` | Favicon                                      |
+| `scholarUrl`           | string        | —                                   | PI 的 Google Scholar 主页；显示在 `/publications` 顶部与页脚 |
+| `dblpUrl`              | string        | —                                   | PI 的 DBLP 主页；显示在 `/publications` 顶部与页脚         |
+| `dblpPid`              | string        | —                                   | DBLP 作者 id（如 `47/3459-1`），供 `npm run pubs:sync` 使用 |
 | `featuredNewsCount`    | number        | `4`                                 | 首页 featured 新闻默认条数                           |
 | `newsPageVisibleCount` | number        | `12`                                | `/news` 每页条数（Previous / Next 分页）             |
 | `blogPageVisibleCount` | number        | `10`                                | `/blog` 每页条数（Previous / Next 分页）             |
@@ -469,7 +472,9 @@ BibTeX，一条一个 entry。
 
 **论文 ↔ 博客互链：** 给论文加 `blog=` 字段后，该论文会显示 Blog 芯片；对应博客文章页也会自动显示「Related paper」反向链接（反向链接以 `content/publications.bib` 为准）。注意成员 `papers.bib` 与全局 `publications.bib` 的 citation key 可能不同，需在各自文件的对应条目里分别添加 `blog=`。
 
-`/publications` 顶部提供搜索框（标题/作者/会议）、按年份筛选、按方向标签筛选（来自 `keywords`，有标签才显示）；每条论文有「Copy BibTeX」按钮复制规范引用。列表按年份降序分组。
+`/publications` 顶部提供搜索框（标题/作者/会议）、按年份筛选、按方向标签筛选（来自 `keywords`，有标签才显示）；每条论文有「Copy BibTeX」按钮复制规范引用。列表按年份降序分组（当年分 Published / Preprints，往年默认折叠）。
+
+**与 DBLP 同步（保持论文列表准确）：** `bib` 易手工出错,可用 `npm run pubs:sync` 按 `site.yaml` 的 `dblpPid` 核对 DBLP——报告作者/DOI 差异与「DBLP 上已发表但库里没有」的新论文(只读)；确认无误后用 `npm run pubs:sync -- --apply` 自动追加这些新论文。仓库还配了每月自动核对的 GitHub Action（`.github/workflows/dblp-sync-check.yml`），有漂移时开 issue 提醒。
 
 ---
 

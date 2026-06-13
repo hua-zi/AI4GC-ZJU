@@ -1,0 +1,48 @@
+name: DBLP publications drift check
+
+# Monthly (and on-demand) check that content/publications.bib is still in sync
+# with the PI's DBLP record. Read-only: it never edits the repo — on drift it
+# opens an issue with the report so a human can run `npm run pubs:sync -- --apply`.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Run DBLP sync report
+        id: sync
+        continue-on-error: true
+        run: node scripts/sync-dblp.mjs > dblp-report.txt 2>&1
+
+      - name: Publish report to job summary
+        run: |
+          {
+            echo '```'
+            cat dblp-report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open issue on drift
+        if: steps.sync.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "Publications drift vs DBLP ($(date +%Y-%m-%d))" \
+            --body-file dblp-report.txt || true

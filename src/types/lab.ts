@@ -252,6 +252,9 @@ export type SiteConfig = {
   schoolName: string;
   schoolHref: string;
   favicon: string;
+  scholarUrl: string;
+  dblpUrl: string;
+  dblpPid: string;
   featuredNewsCount: number;
   newsPageVisibleCount: number;
   blogPageVisibleCount: number;

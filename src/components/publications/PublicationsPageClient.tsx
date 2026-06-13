@@ -17,12 +17,16 @@ type PublicationsPageClientProps = {
   publications: PublicationItem[];
   authorLinks: Record<string, string>;
   githubStars: GitHubStarsMap;
+  scholarUrl?: string;
+  dblpUrl?: string;
 };
 
 export default function PublicationsPageClient({
   publications,
   authorLinks,
   githubStars,
+  scholarUrl,
+  dblpUrl,
 }: PublicationsPageClientProps) {
   const [query, setQuery] = useState("");
   const [year, setYear] = useState<string>(ALL);
@@ -89,6 +93,31 @@ export default function PublicationsPageClient({
   return (
     <main>
       <ContentSection className="section-page-body">
+        {scholarUrl || dblpUrl ? (
+          <p className="publications-also-on">
+            <span className="publications-also-on__label">Full, up-to-date list also on</span>
+            {scholarUrl ? (
+              <a
+                href={scholarUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="publications-also-on__link"
+              >
+                Google Scholar ↗
+              </a>
+            ) : null}
+            {dblpUrl ? (
+              <a
+                href={dblpUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="publications-also-on__link"
+              >
+                DBLP ↗
+              </a>
+            ) : null}
+          </p>
+        ) : null}
         <div className="publications-toolbar">
           <div className="publications-search">
             <svg className="publications-search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
