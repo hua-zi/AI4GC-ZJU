@@ -1,8 +1,32 @@
 import type { NextConfig } from "next";
+import { getSecurityHeaders } from "./src/lib/security/headers";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   output: "standalone",
+  poweredByHeader: false,
+  async headers() {
+    const securityHeaders = getSecurityHeaders();
+    return [
+      {
+        source: "/:path*",
+        headers: securityHeaders,
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/songhan",
+        destination: "/shengyu-zhang",
+        permanent: true,
+      },
+      {
+        source: "/song-han",
+        destination: "/shengyu-zhang",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

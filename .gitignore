@@ -15,6 +15,7 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+*.bak
 
 # Debug
 npm-debug.log*
@@ -38,12 +39,17 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# Local settings (not project config)
-.claude/settings.local.json
-
-# User-specific skills (not part of the template)
-.claude/skills/customize/
-.claude/skills/release/
+# Local agent / tool artifacts
+.claude/
+.impeccable/
 
 # Local temp files
 temp/
+.venv-scholar/
+
+# Python tooling cache (scripts/)
+__pycache__/
+*.pyc
+
+# Local editor history (VS Code Local History etc.)
+.history/

@@ -1,19 +1,20 @@
-## Summary
+<!--
+  提交前请填写下面内容，并对照勾选清单。
+  这能帮助老师更快地 review 和合并你的改动。
+-->
 
-<!-- What does this PR do and why? -->
+## 这次改了什么
 
-## Related Issue
+<!-- 一句话说明，例如：更新我的自我介绍 / 新增一篇论文 / 发布一篇博客《xxx》 -->
 
-<!-- Link to the issue this addresses, e.g. Closes #123 -->
 
-## Type of Change
+## 自查清单
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation
-- [ ] Refactoring
-- [ ] Breaking change
+- [ ] 我**只修改了自己的内容**（我的成员文件夹 / 我自己的博客文章 / 我自己的论文条目）
+- [ ] 我按照 [`content/guidance.md`](../blob/master/content/guidance.md) 的格式填写
+- [ ] 下方 **Content & build check** 这项自动检查是 ✅ 绿色通过的（如果是红色 ❌，请点开看错误提示并修正）
+- [ ] （如果新增/替换了图片）图片已放在对应的文件夹内，文件名用英文、无空格
 
-## Checklist
+## 给老师 review 的备注（可选）
 
-- [ ] `npm run check` passes (lint + typecheck + build)
+<!-- 任何需要老师特别注意的地方，没有可留空 -->

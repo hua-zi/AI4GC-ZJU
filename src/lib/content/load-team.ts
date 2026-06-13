@@ -1,0 +1,228 @@
+import { existsSync, readdirSync, readFileSync } from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { cache } from "react";
+import { CONTENT_PATHS, TEAM_GROUPS } from "@/lib/content/paths";
+import { MEMBER_INDEX_FILE } from "@/lib/content/constants";
+import { teamMemberFrontmatterSchema, teamMemberSchema } from "@/lib/content/schema";
+import { loadSiteConfig } from "@/lib/content/load-site";
+import {
+  memberIndexPath,
+  resolveMemberAsset,
+  rewriteMemberBodyAssets,
+  type TeamContentGroup,
+} from "@/lib/content/team-assets";
+import { parseMemberStartDate, resolveId } from "@/lib/content/slug";
+import { resolveMemberEmail } from "@/lib/content/member-email";
+import type { MemberProfile, TeamContent, TeamMember } from "@/types/lab";
+import { resolveProfileBody } from "@/lib/content/resolve-profile-papers";
+
+type MemberRole = "pi" | "member";
+
+type LoadedMemberFile = {
+  group: TeamContentGroup;
+  memberFolder: string;
+  member: TeamMember;
+  body: string;
+};
+
+function sortMembers(members: TeamMember[]): TeamMember[] {
+  return [...members].sort((a, b) => {
+    const dateA = parseMemberStartDate(a.startDate ?? "");
+    const dateB = parseMemberStartDate(b.startDate ?? "");
+    if (dateA !== dateB) return dateA - dateB;
+
+    return a.name.localeCompare(b.name);
+  });
+}
+
+function listMemberFolders(groupDir: string): string[] {
+  if (!existsSync(groupDir)) {
+    return [];
+  }
+
+  return readdirSync(groupDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter((folder) => existsSync(path.join(groupDir, folder, MEMBER_INDEX_FILE)))
+    .sort();
+}
+
+function loadMemberFile(
+  group: TeamContentGroup,
+  memberFolder: string,
+  role: MemberRole,
+): LoadedMemberFile {
+  const filePath = memberIndexPath(group, memberFolder);
+  const { data, content } = matter(readFileSync(filePath, "utf-8"));
+  const parsed = teamMemberFrontmatterSchema.parse(data);
+
+  const startDate =
+    parsed.startDate === undefined || parsed.startDate === null
+      ? undefined
+      : String(parsed.startDate).trim();
+
+  if (role === "member" && !startDate) {
+    throw new Error(
+      `Missing startDate in ${filePath}. Add enrollment or join date (e.g. 2024 or Fall 2024).`,
+    );
+  }
+
+  const id = resolveId(parsed.id, memberFolder);
+  const body = rewriteMemberBodyAssets(content.trim(), group, memberFolder);
+  const profile = parsed.profile === true ? memberFolder : undefined;
+  const { email, links: linksWithoutMailto } = resolveMemberEmail(parsed.email, parsed.links);
+  const links = linksWithoutMailto;
+  const photo = resolveMemberAsset(group, memberFolder, parsed.photo);
+  const heroBackground = resolveMemberAsset(group, memberFolder, parsed.heroBackground);
+
+  const member = teamMemberSchema.parse({
+    name: parsed.name,
+    photo,
+    heroBackground,
+    bio: parsed.bio,
+    degree: parsed.degree,
+    order: parsed.order,
+    id,
+    startDate,
+    profile,
+    tags: parsed.tags,
+    email,
+    links,
+  });
+
+  return {
+    group,
+    memberFolder,
+    member,
+    body,
+  };
+}
+
+function loadMembersFromGroup(group: TeamContentGroup): TeamMember[] {
+  const groupDir = path.join(CONTENT_PATHS.teamDir, group);
+  const members = listMemberFolders(groupDir).map((folder) =>
+    loadMemberFile(group, folder, "member").member,
+  );
+
+  return sortMembers(members);
+}
+
+function loadPi(): TeamMember {
+  const piDir = path.join(CONTENT_PATHS.teamDir, "pi");
+  if (!existsSync(piDir)) {
+    throw new Error("Missing content/team/pi/ directory with PI profile");
+  }
+
+  const folders = listMemberFolders(piDir);
+  if (folders.length === 0) {
+    throw new Error("Missing PI profile in content/team/pi/<member>/index.md");
+  }
+
+  return loadMemberFile("pi", folders[0], "pi").member;
+}
+
+function assertUniqueProfileSlugs(files: LoadedMemberFile[]): void {
+  const seen = new Map<string, string>();
+
+  for (const file of files) {
+    const slug = file.member.profile;
+    if (!slug) {
+      continue;
+    }
+
+    const key = slug.toLowerCase();
+    const pathLabel = `content/team/${file.group}/${file.memberFolder}/`;
+    const existing = seen.get(key);
+    if (existing) {
+      throw new Error(`Duplicate profile slug "${slug}" at ${existing} and ${pathLabel}`);
+    }
+
+    seen.set(key, pathLabel);
+  }
+}
+
+function loadAllMemberFilesImpl(): LoadedMemberFile[] {
+  const piDir = path.join(CONTENT_PATHS.teamDir, "pi");
+  const piMembers = listMemberFolders(piDir).map((folder) => loadMemberFile("pi", folder, "pi"));
+
+  const groupMembers = TEAM_GROUPS.flatMap((group) => {
+    const groupDir = path.join(CONTENT_PATHS.teamDir, group);
+    return listMemberFolders(groupDir).map((folder) => loadMemberFile(group, folder, "member"));
+  });
+
+  const files = [...piMembers, ...groupMembers];
+  assertUniqueProfileSlugs(files);
+  return files;
+}
+
+const loadAllMemberFiles = cache(loadAllMemberFilesImpl);
+
+function listAllTeamMembers(): TeamMember[] {
+  const team = loadTeamContent();
+  return [team.pi, ...TEAM_GROUPS.flatMap((group) => team[group])];
+}
+
+export function findTeamMemberByProfile(slug: string): TeamMember | null {
+  const normalized = slug.replace(/^\//, "").toLowerCase();
+
+  return (
+    listAllTeamMembers().find((member) => member.profile?.toLowerCase() === normalized) ??
+    null
+  );
+}
+
+export function findTeamMemberById(id: string): TeamMember | null {
+  const normalized = id.trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  return listAllTeamMembers().find((member) => member.id.toLowerCase() === normalized) ?? null;
+}
+
+export function listMemberProfileSlugs(): string[] {
+  return loadAllMemberFiles()
+    .map(({ member }) => member.profile)
+    .filter((profile): profile is string => Boolean(profile))
+    .sort();
+}
+
+export const loadMemberProfile = cache((slug: string): MemberProfile | null => {
+  const normalized = slug.replace(/^\//, "").toLowerCase();
+  const match = loadAllMemberFiles().find(
+    ({ member }) => member.profile?.toLowerCase() === normalized,
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    slug: match.member.profile!,
+    body: match.body,
+    segments: resolveProfileBody(match.body, match.group, match.memberFolder).segments,
+    member: match.member,
+    group: match.group,
+  };
+});
+
+export function loadTeamContent(): TeamContent {
+  const site = loadSiteConfig();
+
+  const groups = TEAM_GROUPS.reduce(
+    (acc, group) => {
+      acc[group] = loadMembersFromGroup(group);
+      return acc;
+    },
+    {} as Pick<TeamContent, (typeof TEAM_GROUPS)[number]>,
+  );
+
+  return {
+    pi: loadPi(),
+    ...groups,
+    openings: site.team.openings,
+    openingsForm: site.team.openingsForm ?? null,
+    sponsors: site.team.sponsors,
+  };
+}

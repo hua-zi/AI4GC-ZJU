@@ -1,0 +1,7 @@
+# Homepage module display order (ids match filenames under modules/).
+modules:
+  - who-we-are
+  - research-directions
+  - lab-news
+  - lab-projects
+  - lab-partners

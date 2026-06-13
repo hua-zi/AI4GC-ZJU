@@ -1,0 +1,26 @@
+# Homepage hero — edit and commit; site rebuilds on deploy.
+#
+# backgroundImage: optional image path (prefer /content-assets/...)
+# brandMark: optional image on hero right (prefer /content-assets/...)
+
+kicker: Zhejiang University
+title: AI4GC Lab
+subtitle: We build efficient multimodal models and computer-use agents—and the systems work to run them outside the lab.
+brandMark: /content-assets/ai4gclab/AI4GC.png
+actions:
+  - label: Publications
+    href: /publications
+  - label: Team
+    href: /team
+  - label: Recruiting Form
+    href: https://docs.qq.com/form/page/DSmJQb0d5WkdsbmZP#/fill
+    external: true
+channels:
+  - label: WeChat
+    desc: AI4GC Lab
+    kind: qr
+    qrImage: /content-assets/media/ai4gc_wechat.png
+  - label: RedNote
+    desc: AI4GC Lab
+    kind: link
+    href: https://xhslink.com/m/3QAqOU4XQgx

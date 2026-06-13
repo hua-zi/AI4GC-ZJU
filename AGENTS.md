@@ -1,65 +1,142 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# AI4GC Lab Website — Agent Guide
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Official Next.js site for AI4GC Lab (Zhejiang University). Content lives in `content/`; pages are built at compile time from YAML, BibTeX, and Markdown.
 
-# Website Reverse-Engineer Template
+## Tech stack
 
-## What This Is
-A reusable template for reverse-engineering any website into a clean, modern Next.js codebase using AI coding agents. The Next.js + shadcn/ui + Tailwind v4 base is pre-scaffolded — just run `/clone-website <url1> [<url2> ...]`.
-
-## Tech Stack
-- **Framework:** Next.js 16 (App Router, React 19, TypeScript strict)
-- **UI:** shadcn/ui (Radix primitives, Tailwind CSS v4, `cn()` utility)
-- **Icons:** Lucide React (default — will be replaced/supplemented by extracted SVGs)
-- **Styling:** Tailwind CSS v4 with oklch design tokens
-- **Deployment:** Vercel
+- Next.js 16 (App Router), React 19, TypeScript strict
+- Tailwind CSS v4, shadcn/ui
+- Content validation: Zod (`src/lib/content/schema.ts`)
 
 ## Commands
-- `npm run dev` — Start dev server
-- `npm run build` — Production build
-- `npm run lint` — ESLint check
-- `npm run typecheck` — TypeScript check
-- `npm run check` — Run lint + typecheck + build
 
-## Code Style
-- TypeScript strict mode, no `any`
-- Named exports, PascalCase components, camelCase utils
-- Tailwind utility classes, no inline styles
-- 2-space indentation
-- Responsive: mobile-first
-
-## Design Principles
-- **Pixel-perfect emulation** — match the target's spacing, colors, typography exactly
-- **No personal aesthetic changes during emulation phase** — match 1:1 first, customize later
-- **Real content** — use actual text and assets from the target site, not placeholders
-- **Beauty-first** — every pixel matters
-
-## Project Structure
-```
-src/
-  app/              # Next.js routes
-  components/       # React components
-    ui/             # shadcn/ui primitives
-    icons.tsx       # Extracted SVG icons as React components
-  lib/
-    utils.ts        # cn() utility (shadcn)
-  types/            # TypeScript interfaces
-  hooks/            # Custom React hooks
-public/
-  images/           # Downloaded images from target site
-  videos/           # Downloaded videos from target site
-  seo/              # Favicons, OG images, webmanifest
-docs/
-  research/         # Inspection output (design tokens, components, layout)
-  design-references/ # Screenshots and visual references
-scripts/            # Asset download scripts
+```bash
+npm run dev        # local preview
+npm run check      # lint + typecheck + test + build (run before finishing)
+npm run lint
+npm run typecheck
+npm run test
+npm run build
 ```
 
-## MOST IMPORTANT NOTES
-- When launching Claude Code agent teams, ALWAYS have each teammate work in their own worktree branch and merge everyone's work at the end, resolving any merge conflicts smartly since you are basically serving the orchestrator role and have full context to our goals, work given, work achieved, and desired outcomes.
-- After editing `AGENTS.md`, run `bash scripts/sync-agent-rules.sh` to regenerate platform-specific instruction files.
-- After editing `.claude/skills/clone-website/SKILL.md`, run `node scripts/sync-skills.mjs` to regenerate the skill for all platforms.
+## Environment
 
-@docs/research/INSPECTION_GUIDE.md
+Optional `.env.local` (see `.env.example`):
+
+| Variable | Purpose |
+| --- | --- |
+| `GITHUB_TOKEN` | Higher GitHub API rate limits for star counts on link chips |
+| `ADMIN_ENABLED` | Set `true` to enable `/admin` content file console (off by default in production) |
+| `ADMIN_PASSWORD` | Admin login password |
+| `ADMIN_SECRET` | HMAC secret for admin session cookie |
+| `ADMIN_ALLOWED_IPS` | Optional comma-separated IP allowlist for admin routes |
+
+## Production & security
+
+| Concern | Location |
+| --- | --- |
+| Disallow crawlers | `src/app/robots.ts` (`Disallow: /`) |
+| Page-level noindex | `src/app/layout.tsx` → `generateMetadata().robots` |
+| Security headers (HSTS, CSP, etc.) | `src/lib/security/headers.ts`, wired in `next.config.ts` |
+| Member/blog asset serving | `src/app/team-assets/`, `src/app/blog-assets/` — path traversal + MIME allowlist |
+
+Site is intentionally **noindex** today. Re-enable indexing by updating `robots.ts` and layout metadata.
+
+## Content layout (source of truth)
+
+```
+content/
+  guidance.md              # content authoring manual shown first in /admin
+  assets/                  # public, site-wide assets only
+  site.yaml              # identity, nav, footer, page heroes
+  publications.bib       # global publication list + bib cite keys
+  home/                  # hero, order, modules/
+    modules/
+      lab-projects/       # index.yaml + project-local assets
+      lab-partners/       # index.yaml + partner-local assets
+  news/                  # *.yaml or *.md per item
+  blog/
+    {post}/              # one folder per post
+      index.md           # frontmatter + Markdown body
+      cover.*            # optional local assets
+  team/
+    {group}/{member}/    # one folder per member
+      index.md           # frontmatter + optional profile body
+      photo.*            # optional local assets
+      papers.bib         # profile paper list (cite keys in index.md body)
+```
+
+**Full editor spec (authoritative):** [content/guidance.md](content/guidance.md) — all content must be authored according to this document.
+
+## Routes
+
+| Route | Source |
+| --- | --- |
+| `/` | `content/home/` |
+| `/news` | `content/news/` |
+| `/publications` | `content/publications.bib` |
+| `/team` | `content/team/` |
+| `/blog` | `content/blog/` |
+| `/blog/{post-folder}` | blog post `index.md` body |
+| `/blog-assets/{post}/{file}` | local blog assets |
+| `/home-assets/{module}/{file}` | local homepage module assets |
+| `/{member-folder}` | member `index.md` when `profile: true` (e.g. `/shengyu-zhang`, `/yurun-chen-2025-12551024`) |
+| `/team-assets/{group}/{member}/{file}` | local member assets |
+
+Legacy redirects: `/songhan` and `/song-han` → `/shengyu-zhang` in `next.config.ts`.
+
+There is no `content/pages/` directory. Profile pages are the Markdown body in each member's `index.md`.
+
+## Team & profile conventions
+
+- Each member: `content/team/{group}/{folder}/index.md` (not flat `.yaml` files).
+- **Folder name = canonical id + profile URL.** Default for non-PI: `{name-slug}-{year}-{student-or-staff-id}` — student ID (学号) or staff/employee ID (工号), e.g. `jane-doe-2024-120010010`, `qinghao-hu-2022-020001`. PI may use `{name-slug}` only (e.g. `shengyu-zhang`). Optional frontmatter `id:` overrides internal id only; profile URL stays the folder name.
+- Groups: `pi`, `postdocs`, `phds`, `masters`, `undergrads`, `alumni`.
+- Non-PI members require `startDate` in frontmatter.
+- `profile: true` publishes at `/{folder}`; build fails on duplicate profile slugs.
+- **PI profile** (`content/team/pi/`): centered avatar hero — `degree` subtitle; default gradient background; optional `heroBackground` image (same path rules as `photo`).
+- **Member profile** (other groups): compact light hero with left avatar, lab name kicker.
+- Profile hero: `name` + site name kicker (members only; no `degree` in hero); PI uses `degree` as hero subtitle; `bio` is for SEO/cards/fallback intro.
+- `photo:` should be a relative file in the member folder (served under `/team-assets/...`); member avatars are self-contained member assets.
+- `tags:` optional string array — free-form labels under profile hero title and on `/team` card.
+- `email:` optional — profile hero (below tags); team card header (below name/meta).
+- `/team` cards prefix `startDate` by group: **Enrolled** (phds/masters/undergrads/alumni), **Joined** (postdocs). Labels in `src/lib/content/constants.ts` → `TEAM_MEMBER_START_LABELS`.
+- Homepage hero optional `brandMark` (prefer `/content-assets/...`) shown on the right of `content/home/hero.yaml`.
+- BibTeX arXiv entries: use `journal={arXiv}` — build normalizes long `arXiv preprint arXiv:…` strings to display as `arXiv · {year}` on profile/publication lists.
+- Profile body structured sections only support `@papers` (member-local `papers.bib` + cite keys) and `@blog`. Put other narrative content in the intro body. See `content/guidance.md`.
+- Blog posts: frontmatter has **no** `links` field; external URLs belong in Markdown body only. No auto-generated References block.
+
+## Key code paths
+
+| Area | Path |
+| --- | --- |
+| Site config | `src/lib/content/load-site.ts` |
+| Team + profiles | `src/lib/content/load-team.ts` |
+| Profile body segments + papers | `src/lib/content/resolve-profile-papers.ts` |
+| Markdown render | `src/components/markdown/MarkdownBody.tsx` |
+| Profile Markdown UI | `src/components/site/MemberMarkdown.tsx` |
+| BibTeX → publications | `src/lib/content/bib-publications.ts` |
+| Member asset URLs | `src/lib/content/team-assets.ts` |
+| Blog + posts | `src/lib/content/load-blog.ts` |
+| Blog author → member link | `authorId` / `authorIds` in post frontmatter (member folder id: `{name-slug}-{year}-{student-or-staff-id}`) → `src/lib/content/blog-authors.ts` |
+| Blog list pagination + sort | `src/components/blog/BlogPageClient.tsx` (`blogPageVisibleCount`) |
+| Blog Markdown render | `src/components/blog/BlogPostBody.tsx` |
+| Blog assets | `src/lib/content/blog-assets.ts` |
+| Profile blog list | `loadBlogPostsByAuthorId()` + `kind: blog-channel` links → `src/components/profile/ProfileBlogPosts.tsx` |
+| Profile page route + layout | `src/app/[slug]/page.tsx`, `src/components/profile/ProfilePageContent.tsx`, `src/components/profile/PiProfileHero.tsx` |
+| Venue labels (arXiv etc.) | `src/lib/publications-utils.ts`, `src/lib/content/bib-publications.ts` |
+| Team card start-date labels | `src/lib/content/constants.ts`, `src/lib/content/slug.ts` → `formatMemberStartMeta` |
+| Security headers | `src/lib/security/headers.ts`, `next.config.ts` |
+| Crawler policy | `src/app/robots.ts`, `src/app/layout.tsx` metadata |
+| Admin file console | `src/lib/admin/`, `src/app/admin/`, `src/app/api/admin/`, `src/middleware.ts` |
+| Tests | `src/lib/content/resolve-profile-papers.test.ts`, `src/lib/content/slug.test.ts`, `src/lib/publications-utils.test.ts`, `src/lib/security/headers.test.ts` |
+| News pagination | `src/components/news/NewsPageClient.tsx` (`newsPageVisibleCount`) |
+| Projects pagination | `src/components/home/ProjectsPanel.tsx` (3 rows × responsive columns) |
+
+## Editing rules
+
+- Match existing content patterns; prefer extending loaders/schemas over one-off hacks.
+- Use real lab content and assets — no placeholders on public pages.
+- **All content changes must follow [content/guidance.md](content/guidance.md)** — field names, paths, and profile formats are defined there, not in this file.
+- Footer credit in `site.yaml` → `footer.credit`; rendered as `Copyright {name}. {credit}`.
+- After substantive doc changes, keep `README.md` and `content/guidance.md` aligned with code.

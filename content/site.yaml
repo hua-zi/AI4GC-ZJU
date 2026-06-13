@@ -1,0 +1,53 @@
+# site.yaml — global site identity, navigation, and display settings.
+
+name: AI4GC Lab
+tagline: Efficient AI systems research at Zhejiang University.
+description: AI4GC Lab — efficient AI systems for multimodal generation, agents, and deployable model optimization.
+logo: /content-assets/ai4gclab/logo.jpg
+schoolLogo: /content-assets/zju/zju.svg
+schoolName: Zhejiang University
+schoolHref: https://www.zju.edu.cn/english/
+favicon: /content-assets/site/favicon.jpeg
+
+featuredNewsCount: 4
+newsPageVisibleCount: 12
+blogPageVisibleCount: 10
+
+nav:
+  - label: About
+    href: /
+  - label: News
+    href: /news
+  - label: Blog
+    href: /blog
+  - label: Publications
+    href: /publications
+  - label: Team
+    href: /team
+
+footer:
+  credit: Designed and Developed by Yurun Chen.
+  externalLinks:
+    - label: Prof. Shengyu Zhang
+      href: https://person.zju.edu.cn/shengyuzhang
+      external: true
+
+pages:
+  team:
+    title: Team
+  news:
+    title: News
+  blog:
+    title: Blog
+  publications:
+    title: Publications
+
+team:
+  openings: >-
+    If you work on efficient LLM, VLM, and GenAI and are interested in joining us,
+    please fill out the recruiting form. Incomplete inquiries are not replied.
+  openingsForm:
+    label: Recruiting Form
+    href: "https://docs.qq.com/form/page/DSmJQb0d5WkdsbmZP#/fill"
+    external: true
+  sponsors: null

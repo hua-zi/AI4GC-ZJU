@@ -1,0 +1,38 @@
+# Module id defaults to filename: research-directions
+type: highlights
+title: Research directions
+items:
+  - id: fine-tuning-small-mllms-agents-0
+    label: Fine-tuning Small MLLMs / Agents
+    content: Fine-tuning 3B GUI agents using SFT/RL to reduce latency and resource cost for deployment.
+    links:
+      - label: InfiGUIAgent
+        href: https://github.com/InfiXAI/InfiGUIAgent
+      - label: InfiGUI-R1
+        href: https://github.com/InfiXAI/InfiGUI-R1
+      - label: InfiGUI-G1
+        href: https://github.com/InfiXAI/InfiGUI-G1
+  - id: speculative-decoding-1
+    label: Speculative Decoding
+    content: EcoAgent introduces speculative decoding strategies for faster inference while preserving output quality.
+    links:
+      - label: EcoAgent
+        href: https://github.com/InfiXAI/EcoAgent
+  - id: efficient-agent-collaboration-2
+    label: Efficient Agent Collaboration
+    content: Agent collaboration frameworks designed to reduce coordination overhead and improve real-time productivity.
+    links:
+      - label: EcoAgent
+        href: https://github.com/InfiXAI/EcoAgent
+  - id: device-cloud-model-collaboration-3
+    label: Device-Cloud Model Collaboration
+    content: Flexible partitioning between on-device and cloud execution for cost-efficient generative AI systems.
+    links:
+      - label: InfiGUIAgent
+        href: https://github.com/InfiXAI/InfiGUIAgent
+  - id: mllm-kv-cache-optimization-4
+    label: MLLM KV-cache Optimization
+    content: Cache-aware optimization for long-context generation in multimodal large models.
+    links:
+      - label: InfiGUIAgent
+        href: https://github.com/InfiXAI/InfiGUIAgent

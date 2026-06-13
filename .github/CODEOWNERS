@@ -1,0 +1,14 @@
+# CODEOWNERS —— 谁是各部分内容的"必需审核人"
+#
+# 配合分支保护规则使用:在 GitHub 仓库 Settings → Branches 里
+# 对 master 开启 "Require review from Code Owners",
+# 这样任何人改下面匹配到的文件,都必须经过对应 owner 审批才能合并。
+#
+# ⚠️ 把 @shengyuzhang 换成你（PI）真实的 GitHub 用户名（若不同）。
+# 如果以后有多个维护者，可以写成多个：@user-a @user-b
+
+# 默认：仓库里任何改动都需要 PI 审核
+*                 @shengyuzhang
+
+# 内容目录（学生主要在这里编辑）—— 同样需要 PI 审核
+/content/         @shengyuzhang

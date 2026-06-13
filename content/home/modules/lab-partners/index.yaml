@@ -1,0 +1,23 @@
+type: partners
+title: Collaborators & Partners
+items:
+  - id: ant-group
+    kind: company
+    name: Ant Group
+    logo: ant-group.svg
+    href: https://www.antgroup.com
+  - id: alibaba
+    kind: company
+    name: Alibaba
+    logo: alibaba.svg
+    href: https://www.alibabagroup.com
+  - id: xiaomi
+    kind: company
+    name: Xiaomi
+    logo: xiaomi.svg
+    href: https://www.mi.com
+  - id: tencent
+    kind: company
+    name: Tencent
+    logo: tencent.svg
+    href: https://www.tencent.com

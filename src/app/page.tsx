@@ -1,9 +1,18 @@
-export default function Home() {
+import HomePageClient from "@/components/home/HomePageClient";
+import { collectGitHubHrefsFromHome, fetchGitHubStarsMap } from "@/lib/github-stars";
+import { getHomeContent, getNewsItems, getSiteConfig } from "@/lib/content";
+
+export default async function HomePage() {
+  const home = getHomeContent();
+  const site = getSiteConfig();
+  const githubStars = await fetchGitHubStarsMap(collectGitHubHrefsFromHome(home));
+
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <p className="text-muted-foreground">
-        Clone target not yet built. Run <code className="font-mono text-foreground">/clone-website</code> to start.
-      </p>
-    </main>
+    <HomePageClient
+      home={home}
+      newsItems={getNewsItems()}
+      defaultNewsLimit={site.featuredNewsCount}
+      githubStars={githubStars}
+    />
   );
 }

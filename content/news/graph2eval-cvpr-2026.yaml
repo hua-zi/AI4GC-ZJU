@@ -1,0 +1,29 @@
+# graph2eval-cvpr-2026.yaml — news item (YAML format).
+# Copy this file, rename the slug, and edit fields. Filename (without extension) = default `id`.
+#
+# Fields: date (Mon YYYY), title, desc, featured, image, imageAlt, href, links
+# See content/guidance.md → 新闻 content/news/
+
+date: Feb 2026
+title: Graph2Eval accepted to CVPR 2026
+desc: >-
+  Graph2Eval turns documents and web pages into a knowledge-graph task space for
+  scalable, controllable evaluation of RAG and web agents.
+featured: true
+image: /blog-assets/graph2eval-cvpr-2026/graph2eval.png
+imageAlt: Graph2Eval knowledge-graph task generation overview
+links:
+  - label: Blog
+    href: /blog/graph2eval-cvpr-2026
+  - label: Paper
+    href: http://arxiv.org/abs/2510.00507
+    external: true
+  - label: GitHub
+    href: https://github.com/YurunChen/Graph2Eval
+    external: true
+  - label: 小红书
+    href: https://www.xiaohongshu.com/explore/69df07650000000023016d86
+    external: true
+  - label: 公众号
+    href: https://mp.weixin.qq.com/s/9oeXMdY4ReexVJ0LrmgXFQ
+    external: true

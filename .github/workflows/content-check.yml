@@ -1,0 +1,37 @@
+name: Content & build check
+
+# 每当有人提 PR 到 master，或直接推送到 master 时，自动跑校验。
+# 这一步会检查内容格式（Zod schema）、类型、测试，并完整构建一遍网站。
+# 学生写错字段、漏必填项、BibTeX 格式错误等，都会在这里被拦下，
+# 在合并之前就标红，从而大幅减少 PI 人工 review 的负担。
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+# 同一个 PR 连续多次推送时，取消上一次还在跑的检查，节省额度。
+concurrency:
+  group: content-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: lint + typecheck + test + build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks (lint, typecheck, test, build)
+        run: npm run check
