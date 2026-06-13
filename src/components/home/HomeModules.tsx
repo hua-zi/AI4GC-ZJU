@@ -26,16 +26,14 @@ function isExternalLink(href: string, external?: boolean): boolean {
 
 function HighlightsModule({
   module,
-  githubStars,
 }: {
   module: Extract<HomeModule, { type: "highlights" }>;
-  githubStars: GitHubStarsMap;
 }) {
   return (
     <HomeReveal className="home-section">
       <section className="home-section__inner">
         <HomeSectionHeader title={module.title} />
-        <ResearchDirectionsPanel items={module.items} githubStars={githubStars} />
+        <ResearchDirectionsPanel items={module.items} />
       </section>
     </HomeReveal>
   );
@@ -180,9 +178,7 @@ export default function HomeModules({
       {modules.map((module) => {
         switch (module.type) {
           case "highlights":
-            return (
-              <HighlightsModule key={module.id} module={module} githubStars={githubStars} />
-            );
+            return <HighlightsModule key={module.id} module={module} />;
           case "news":
             return (
               <NewsModule

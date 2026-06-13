@@ -35,6 +35,8 @@ items:
     tags:
       - Agents
       - Multimodal
-    links:
-      - label: Paper
-        href: /news
+    # Add the GitHub repo here once public, e.g.:
+    #   links:
+    #     - label: Code
+    #       href: https://github.com/InfiXAI/ForeAct
+    links: []
