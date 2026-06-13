@@ -416,6 +416,7 @@ content/blog/efficient-llm-serving-notes/
 | `author`    | string   | 否   | 作者展示名；省略且设置了 `authorId` / `authorIds` 时，自动取成员 `name`                                                      |
 | `authorId`  | string   | 否   | 单作者 id：团队成员文件夹名（即 `姓名-slug-入学年份-学号/工号`，如 `yurun-chen-2025-12551024`），详情页链到 `/{folder}`（`profile: true` 时） |
 | `authorIds` | string[] | 否   | 多作者 id；每个值同 `authorId`，与 `authorId` 合并去重；构建时校验成员存在                                                        |
+| `links`     | list     | 否   | 文章开头的资源按钮（在引言之后、首个 `##` 之前）；每项 `kind` + `href`（可选 `label`），`kind` ∈ `paper`/`code`/`xiaohongshu`/`wechat`/`website`，每种有专属图标 |
 | `tags`      | string[] | 否   | 话题标签；详情页 Hero 姓名下方                                                                                        |
 | `cover`     | string   | 否   | 封面图：相对路径或 `/content-assets/...`                                                                           |
 | `coverAlt`  | string   | 否   | 封面 alt                                                                                                    |
@@ -423,7 +424,21 @@ content/blog/efficient-llm-serving-notes/
 | `id`        | string   | 否   | 默认等于文件夹名                                                                                                  |
 
 
-正文支持标准 Markdown（GFM）：标题、列表、代码块、引用、图片、链接。文件夹内相对资源映射为 `/blog-assets/{post}/{file}`。正文中的外链按普通 inline 链接渲染；**无** frontmatter `links` 字段，也**无**文末 References 区块。
+正文支持标准 Markdown（GFM）：标题、列表、代码块、引用、图片、链接。文件夹内相对资源映射为 `/blog-assets/{post}/{file}`。正文中的外链按普通 inline 链接渲染；**无**文末自动 References 区块。
+
+frontmatter 的 `links` 用于**文章开头的资源按钮行**（带专属图标、悬停动效），渲染在引言段之后、第一个 `##` 小标题之前；文末的「Further reading」等仍写在正文里（两者可并存）。示例：
+
+```yaml
+links:
+  - kind: paper
+    href: https://arxiv.org/abs/2510.00507
+  - kind: code
+    href: https://github.com/YurunChen/Graph2Eval
+  - kind: xiaohongshu
+    href: https://www.xiaohongshu.com/explore/xxxx
+  - kind: wechat
+    href: https://mp.weixin.qq.com/s/xxxx
+```
 
 `/blog` 列表按 `site.yaml` → `blogPageVisibleCount` 分页，底部 Previous / Next 切换页码；排序可在页内切换 Newest / Oldest first（与 `/news` 相同交互）。
 
@@ -446,9 +461,15 @@ BibTeX，一条一个 entry。
 | `url`                                        | Paper 芯片                                   |
 | `doi`                                        | 无 `url` 时转为 `https://doi.org/...`，Paper 芯片 |
 | `github` / `code` / `codeurl` / `repository` | Project 芯片（含 star 数）                       |
+| `blog` / `blogurl` / `blogslug`              | Blog 芯片，跳转到相关博客。填博客文件夹名（如 `blog={graph2eval-cvpr-2026}`，自动转 `/blog/{slug}`），也可填完整 URL |
+| `keywords`                                   | 方向标签，逗号/分号分隔（如 `keywords={Agents, RAG}`）；用于 `/publications` 顶部的「方向」筛选，未填则该论文不参与标签筛选 |
 
 
-列表按年份降序。
+**作者自动链接：** 论文作者名若与某位成员的 `name` 完全一致（忽略大小写/标点），在 `/publications` 与个人页论文列表中会自动渲染为指向该成员个人页的链接，无需额外配置。
+
+**论文 ↔ 博客互链：** 给论文加 `blog=` 字段后，该论文会显示 Blog 芯片；对应博客文章页也会自动显示「Related paper」反向链接（反向链接以 `content/publications.bib` 为准）。注意成员 `papers.bib` 与全局 `publications.bib` 的 citation key 可能不同，需在各自文件的对应条目里分别添加 `blog=`。
+
+`/publications` 顶部提供搜索框（标题/作者/会议）、按年份筛选、按方向标签筛选（来自 `keywords`，有标签才显示）；每条论文有「Copy BibTeX」按钮复制规范引用。列表按年份降序分组。
 
 ---
 

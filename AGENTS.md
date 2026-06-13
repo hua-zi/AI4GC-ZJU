@@ -104,7 +104,7 @@ There is no `content/pages/` directory. Profile pages are the Markdown body in e
 - Homepage hero optional `brandMark` (prefer `/content-assets/...`) shown on the right of `content/home/hero.yaml`.
 - BibTeX arXiv entries: use `journal={arXiv}` — build normalizes long `arXiv preprint arXiv:…` strings to display as `arXiv · {year}` on profile/publication lists.
 - Profile body structured sections only support `@papers` (member-local `papers.bib` + cite keys) and `@blog`. Put other narrative content in the intro body. See `content/guidance.md`.
-- Blog posts: frontmatter has **no** `links` field; external URLs belong in Markdown body only. No auto-generated References block.
+- Blog posts: optional frontmatter `links` array renders a prominent resource-button row (kinds: `paper`/`code`/`xiaohongshu`/`wechat`/`website`) injected after the intro, before the first `##` heading (`src/components/blog/BlogResourceLinks.tsx`, resolved in `src/lib/content/blog-links.ts`). Prose/“Further reading” links still live in the Markdown body. No auto-generated References block.
 
 ## Key code paths
 

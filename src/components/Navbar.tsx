@@ -60,7 +60,7 @@ export default function Navbar({
             </a>
           ) : null}
           <Link href="/" className="site-nav__logo" onClick={closeMenu}>
-            <Image src={logo} alt={name} width={400} height={66} priority />
+            <Image src={logo} alt={name} width={847} height={766} priority />
           </Link>
         </div>
 
