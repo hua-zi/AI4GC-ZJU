@@ -36,6 +36,9 @@ const normName = (n) =>
   (n || "").normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/\s+\d{4}$/, "")
     .replace(/[^a-z0-9 ]/gi, "").toLowerCase().replace(/\s+/g, " ").trim();
 const isPreprintVenue = (v) => /corr|arxiv|techrxiv/i.test(v || "");
+// Non-archival items DBLP lists as inproceedings but that aren't regular papers.
+const isMinorEntry = (title) =>
+  /\(student abstract\)|\(doctoral consortium\)|\(demonstration[^)]*\)|\(poster[^)]*\)|\(extended abstract\)|\bworkshop$/i.test(title || "");
 
 function curlText(url) {
   return execFileSync("curl", ["-s", "-m", "60", "-A", "ai4gc-website-dblp-sync/1.0", url], {
@@ -135,7 +138,7 @@ for (const rec of records) {
 
 // NEW = published DBLP papers not in the bib
 const newPubs = records
-  .filter((rec) => !rec.preprint && !bibByTitle.has(normTitle(rec.title)))
+  .filter((rec) => !rec.preprint && !isMinorEntry(rec.title) && !bibByTitle.has(normTitle(rec.title)))
   .sort((a, b) => b.year - a.year);
 
 console.log(`\n========== DIFFS (review manually) — ${diffs.length} ==========`);
