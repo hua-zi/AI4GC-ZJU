@@ -11,6 +11,7 @@ type HeroBannerProps = {
   subtitle?: string;
   tags?: string[];
   links?: LinkItem[];
+  linkIcons?: boolean;
   email?: string;
   backgroundImage?: string;
   dark?: boolean;
@@ -29,6 +30,7 @@ export default function HeroBanner({
   subtitle,
   tags = [],
   links = [],
+  linkIcons = false,
   email,
   backgroundImage,
   dark = false,
@@ -85,7 +87,7 @@ export default function HeroBanner({
             {links.length > 0 ? (
               <div className="site-link-chip-list site-hero__links">
                 {links.map((link) => (
-                  <LinkChip key={`${link.label}-${link.href}`} link={link} />
+                  <LinkChip key={`${link.label}-${link.href}`} link={link} showIcon={linkIcons} />
                 ))}
               </div>
             ) : null}

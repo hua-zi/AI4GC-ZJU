@@ -11,6 +11,7 @@ type ProfilePageContentProps = {
   siteName: string;
   heroLinks: LinkItem[];
   githubStars: GitHubStarsMap;
+  authorLinks?: Record<string, string>;
 };
 
 export default function ProfilePageContent({
@@ -18,6 +19,7 @@ export default function ProfilePageContent({
   siteName,
   heroLinks,
   githubStars,
+  authorLinks,
 }: ProfilePageContentProps) {
   const { member, segments, group } = profile;
   const isPi = group === "pi";
@@ -38,7 +40,12 @@ export default function ProfilePageContent({
         <ContentSection className="section-page-body section-page-body--profile section-page-body--profile-pi">
           <div className="profile-page profile-page--pi">
             {segments.length > 0 ? (
-              <MemberMarkdown segments={segments} githubStars={githubStars} variant="pi" />
+              <MemberMarkdown
+                segments={segments}
+                githubStars={githubStars}
+                authorLinks={authorLinks}
+                variant="pi"
+              />
             ) : (
               <article className="profile-markdown profile-markdown--pi">
                 <p className="profile-markdown-body__p">{member.bio}</p>
@@ -57,6 +64,7 @@ export default function ProfilePageContent({
         kicker={siteName}
         tags={member.tags}
         links={heroLinks}
+        linkIcons
         email={member.email}
         compact
         lead={(
@@ -69,7 +77,12 @@ export default function ProfilePageContent({
       <ContentSection className="section-page-body section-page-body--profile section-page-body--profile-member">
         <div className="profile-page profile-page--member">
           {segments.length > 0 ? (
-            <MemberMarkdown segments={segments} githubStars={githubStars} variant="member" />
+            <MemberMarkdown
+              segments={segments}
+              githubStars={githubStars}
+              authorLinks={authorLinks}
+              variant="member"
+            />
           ) : (
             <article className="profile-markdown profile-markdown--member">
               <p className="profile-markdown-body__p">{member.bio}</p>

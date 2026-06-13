@@ -59,7 +59,7 @@ export default function PiProfileHero({
         {links.length > 0 ? (
           <div className="site-link-chip-list pi-profile-hero__links">
             {links.map((link) => (
-              <LinkChip key={`${link.label}-${link.href}`} link={link} />
+              <LinkChip key={`${link.label}-${link.href}`} link={link} showIcon />
             ))}
           </div>
         ) : null}

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProfilePageContent from "@/components/profile/ProfilePageContent";
+import JsonLd from "@/components/site/JsonLd";
 import { getSiteConfig } from "@/lib/content";
+import { absoluteUrl, getSiteUrl } from "@/lib/site/site-url";
 import { filterHeroMemberLinks } from "@/lib/content/member-blog-channels";
 import { resolveProfileSegmentsWithBlog } from "@/lib/content/profile-blog";
-import { listMemberProfileSlugs, loadMemberProfile } from "@/lib/content/load-team";
+import { getMemberAuthorLinks, listMemberProfileSlugs, loadMemberProfile } from "@/lib/content/load-team";
 import { collectGitHubHrefsFromPublications, fetchGitHubStarsMap } from "@/lib/github-stars";
 import type { ProfileBodySegment } from "@/lib/content/resolve-profile-papers";
 import type { PublicationItem } from "@/types/lab";
@@ -31,10 +33,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const site = getSiteConfig();
+  const canonical = `/${profile.slug}`;
 
   return {
-    title: `${profile.member.name} | ${site.name}`,
+    title: profile.member.name,
     description: profile.member.bio,
+    alternates: { canonical },
+    openGraph: {
+      type: "profile",
+      title: `${profile.member.name} | ${site.name}`,
+      description: profile.member.bio,
+      url: canonical,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${profile.member.name} | ${site.name}`,
+      description: profile.member.bio,
+    },
   };
 }
 
@@ -59,12 +74,37 @@ export default async function MemberProfilePage({ params }: PageProps) {
     pathLabel,
   );
 
+  const sameAs = profile.member.links
+    .map((link) => link.href)
+    .filter((href) => /^https?:\/\//i.test(href));
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.member.name,
+    url: absoluteUrl(`/${profile.slug}`),
+    ...(profile.member.photo ? { image: absoluteUrl(profile.member.photo) } : {}),
+    ...(profile.member.bio ? { description: profile.member.bio } : {}),
+    ...(profile.member.degree ? { jobTitle: profile.member.degree } : {}),
+    affiliation: {
+      "@type": "CollegeOrUniversity",
+      name: site.schoolName,
+      url: site.schoolHref,
+    },
+    worksFor: { "@type": "Organization", name: site.name, url: getSiteUrl() },
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+  };
+
   return (
-    <ProfilePageContent
-      profile={{ ...profile, segments }}
-      siteName={site.name}
-      heroLinks={heroLinks}
-      githubStars={githubStars}
-    />
+    <>
+      <JsonLd data={personJsonLd} />
+      <ProfilePageContent
+        profile={{ ...profile, segments }}
+        siteName={site.name}
+        heroLinks={heroLinks}
+        githubStars={githubStars}
+        authorLinks={getMemberAuthorLinks()}
+      />
+    </>
   );
 }

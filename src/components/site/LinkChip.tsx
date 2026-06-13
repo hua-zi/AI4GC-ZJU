@@ -1,3 +1,4 @@
+import LinkBrandIcon, { detectLinkPlatform } from "@/components/site/LinkBrandIcon";
 import { formatStarCount, getGitHubStars, parseGitHubRepo } from "@/lib/github-stars";
 import { isMailtoLink } from "@/lib/content/member-email";
 import type { GitHubStarsMap } from "@/lib/github-stars";
@@ -6,6 +7,8 @@ import type { LinkItem } from "@/types/lab";
 type LinkChipProps = {
   link: LinkItem;
   githubStars?: GitHubStarsMap;
+  /** Show a recognizable platform icon (Scholar/GitHub/DBLP/LinkedIn/Homepage) before the label. */
+  showIcon?: boolean;
 };
 
 function isExternalLink(href: string, external?: boolean): boolean {
@@ -14,9 +17,10 @@ function isExternalLink(href: string, external?: boolean): boolean {
   return /^https?:\/\//.test(href);
 }
 
-export default function LinkChip({ link, githubStars = {} }: LinkChipProps) {
+export default function LinkChip({ link, githubStars = {}, showIcon = false }: LinkChipProps) {
   const external = isExternalLink(link.href, link.external);
   const stars = parseGitHubRepo(link.href) ? getGitHubStars(link.href, githubStars) : undefined;
+  const hasIcon = showIcon && detectLinkPlatform(link.label, link.href) !== null;
 
   return (
     <a
@@ -25,6 +29,11 @@ export default function LinkChip({ link, githubStars = {} }: LinkChipProps) {
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
     >
+      {hasIcon ? (
+        <span className="site-link-chip__icon" aria-hidden="true">
+          <LinkBrandIcon label={link.label} href={link.href} />
+        </span>
+      ) : null}
       <span className="site-link-chip__label">{link.label}</span>
       {stars != null ? (
         <span className="site-link-chip__stars" aria-label={`${stars} project stars`}>
