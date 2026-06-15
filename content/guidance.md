@@ -246,7 +246,7 @@ actions:
 | `enabled` | boolean | `true` | `false` 时不渲染 |
 | `title`   | string  | —      | 模块标题         |
 
-模块可以是 `modules/{id}.yaml`，也可以是 `modules/{id}/index.yaml`。当模块有自包含图片或附件时，推荐使用目录形式，并在 YAML 中写相对路径（如 `image: foreact.svg`）。
+模块可以是 `modules/{id}.yaml`，也可以是 `modules/{id}/index.yaml`。当模块有自包含图片或附件时，推荐使用目录形式，并在 YAML 中写相对路径（如 `image: infigui-agent.svg`）。
 
 ---
 
@@ -459,6 +459,7 @@ BibTeX，一条一个 entry。
 | citation key                                 | `id`                                       |
 | `title`                                      | 标题                                         |
 | `author`                                     | 作者                                         |
+| `corresponding`                              | 通讯作者姓名（多名用 ` and ` 或 `;` 分隔，须与 `author` 中写法一致）；列表中该作者名后加 ✉ 上角标，悬停提示「Corresponding author」。如 `corresponding={Shengyu Zhang}` |
 | `booktitle` / `journal` / `venue`            | venue；无 `year` 时从 venue 提取年份               |
 | `year`                                       | 追加到 venue 显示                               |
 | `url`                                        | Paper 芯片                                   |
@@ -477,6 +478,8 @@ BibTeX，一条一个 entry。
 **与 DBLP 同步（保持论文列表准确）：** `bib` 易手工出错,可用 `npm run pubs:sync` 按 `site.yaml` 的 `dblpPid` 核对 DBLP——报告标题大小写、作者/DOI 差异与「DBLP 上已发表但库里没有」的新论文(只读)；确认无误后:`npm run pubs:sync -- --apply` 追加新论文,`npm run pubs:sync -- --fix-titles` 用 DBLP 权威大小写回填标题(修正 `LLMs`/`GUI`/`AccKV` 等被小写的缩写)。仓库还配了每月自动核对的 GitHub Action（`.github/workflows/dblp-sync-check.yml`），有漂移时开 issue 提醒。
 
 > 标题大小写:解析器默认会把标题做句首式大小写;`bib-publications.ts` 已设 `sentenceCase: false` 保留原文,因此 `.bib` 里的标题应写成正确大小写（缩写保持大写）。
+
+**不收录的论文类型：** workshop / companion volume、abstract（如 Student Abstract）、short paper，以及 CDPD、CICAI 这两个 venue 一律不进入 `/publications`。`scripts/sync-dblp.mjs` 已内置过滤（`isMinorEntry` 按标题、`isExcludedVenue` 按 venue、`IGNORE_TITLES` 按具体标题），DBLP 同步不会再建议加入；如需永久排除某篇具体论文，把其标题加入 `IGNORE_TITLES`。
 
 ---
 
@@ -675,7 +678,6 @@ BibTeX 字段与 `/publications` 相同（`url`/`doi` → Paper 芯片，`github
 content/home/modules/lab-projects/
   index.yaml
   infigui-agent.svg
-  ecoagent.svg
 
 content/home/modules/lab-partners/
   index.yaml

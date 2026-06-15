@@ -25,10 +25,14 @@ function PublicationAuthors({
     return <>{pub.authors}</>;
   }
 
+  const correspondingSet = new Set(pub.correspondingAuthors.map(normalizeAuthorName));
+
   return (
     <>
       {pub.authorList.map((name, index) => {
         const href = authorLinks?.[normalizeAuthorName(name)];
+        // Skip the marker when the corresponding author is also first author.
+        const isCorresponding = index > 0 && correspondingSet.has(normalizeAuthorName(name));
         return (
           <span key={`${pub.id}-author-${index}`}>
             {index > 0 ? ", " : null}
@@ -39,6 +43,15 @@ function PublicationAuthors({
             ) : (
               name
             )}
+            {isCorresponding ? (
+              <sup
+                className="publication-entry__corresponding"
+                title="Corresponding author"
+                aria-label="Corresponding author"
+              >
+                ✉
+              </sup>
+            ) : null}
           </span>
         );
       })}
@@ -97,7 +110,7 @@ export default function PublicationEntry({
   }
 
   return (
-    <article className="publication-entry">
+    <article id={pub.id} className="publication-entry">
       <div className="publication-entry__header">
         <p className="publication-entry__title">{pub.title}</p>
         {badge ? (

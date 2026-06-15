@@ -2432,6 +2432,21 @@ article.member-card.member-card--has-profile {
   color: var(--color-muted-text);
 }
 
+.direction-card__method {
+  font-weight: 650;
+  color: var(--color-brand);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.direction-card__method:hover,
+.direction-card__method:focus-visible {
+  color: var(--color-brand-accent);
+  text-decoration: underline;
+}
+
 .direction-card__footer {
   display: flex;
   flex-wrap: wrap;
@@ -3437,8 +3452,47 @@ article.member-card.member-card--has-profile {
 }
 
 .publication-entry {
+  position: relative;
   border-bottom: 1px solid var(--color-divider);
   padding: var(--space-4) 0;
+  scroll-margin-top: 5rem;
+}
+
+/* Deep-link arrival highlight (from homepage research-direction method links):
+   a soft rounded panel with a hairline brand ring, gently fading out. The
+   ::before layer keeps it behind the text and lets it breathe past the column. */
+.publication-entry--flash::before {
+  content: "";
+  position: absolute;
+  inset: 6px -0.85rem;
+  z-index: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-brand) 6%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-brand) 16%, transparent);
+  pointer-events: none;
+  animation: publication-flash 2.6s ease-out forwards;
+}
+
+.publication-entry--flash > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes publication-flash {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .publication-entry--flash::before {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .publication-year-group .publication-entry:last-child {
@@ -3465,6 +3519,14 @@ article.member-card.member-card--has-profile {
   line-height: var(--leading-normal);
   margin: 0;
   color: var(--color-muted-text);
+}
+
+/* Corresponding-author marker (✉) after an author name. */
+.publication-entry__corresponding {
+  margin-left: 0.15em;
+  font-size: 0.7em;
+  color: var(--color-brand);
+  cursor: help;
 }
 
 .publication-entry__venue {

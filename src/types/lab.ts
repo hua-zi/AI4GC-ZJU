@@ -81,6 +81,8 @@ export type PublicationItem = {
   authors: string;
   /** Individual author display names, in order — used to link group-member authors to profiles. */
   authorList: string[];
+  /** Display names flagged as corresponding authors (BibTeX `corresponding` field). */
+  correspondingAuthors: string[];
   venue: string;
   honor?: string;
   href?: string;

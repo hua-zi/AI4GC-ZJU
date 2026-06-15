@@ -1,26 +1,79 @@
 # Module id defaults to filename: research-directions
 #
-# Research directions guide readers to the related blog post(s).
-# Add a blog link per direction once the post is ready, e.g.:
+# Each direction's `content` leads with the research question we care about and
+# our distinctive angle — not an exhaustive method list. Highlight a few key
+# methods inline with `[Method name](href)`; the renderer styles these as bold
+# blue links. Each method deep-links to its paper on the publications page
+# (`/publications?focus=<bibtex-cite-key>`), which centers and briefly highlights the
+# entry. Point a method at a blog post instead once one exists.
+#
+# Optionally add a per-direction call-to-action:
 #   links:
 #     - label: Read the blog
 #       href: /blog/your-post-folder
-# A direction with no links simply shows its title + description.
 type: highlights
 title: Research directions
 items:
-  - id: fine-tuning-small-mllms-agents-0
+  - id: fine-tuning-small-mllms-agents
     label: Fine-tuning Small MLLMs / Agents
-    content: Fine-tuning 3B GUI agents using SFT/RL to reduce latency and resource cost for deployment.
-  - id: speculative-decoding-1
-    label: Speculative Decoding
-    content: EcoAgent introduces speculative decoding strategies for faster inference while preserving output quality.
-  - id: efficient-agent-collaboration-2
-    label: Efficient Agent Collaboration
-    content: Agent collaboration frameworks designed to reduce coordination overhead and improve real-time productivity.
-  - id: device-cloud-model-collaboration-3
-    label: Device-Cloud Model Collaboration
-    content: Flexible partitioning between on-device and cloud execution for cost-efficient generative AI systems.
-  - id: mllm-kv-cache-optimization-4
+    content: >-
+      How small can a multimodal agent be and still reason, reflect, and act
+      reliably on real interfaces? Our InfiGUI line turns compact GUI agents from
+      reactive responders into deliberative reasoners —
+      [InfiGUIAgent](/publications?focus=infiguiagentmultimodalgeneralistgui2026) is a
+      generalist GUI agent with native reasoning and reflection,
+      [InfiGUI-R1](/publications?focus=infiguir1advancingmultimodal2025) learns
+      step-level planning and recovery through reinforcement learning, and
+      [InfiGUI-G1](/publications?focus=infiguig1advancinggui2026) sharpens grounding via
+      adaptive exploration. We also let small models improve themselves without
+      collapsing, through adaptive policy optimization
+      ([AdaPO](/publications?focus=rollingstonegathersno2026)) and proposer–critic
+      co-evolution ([Propose-then-Critic](/publications?focus=measuretwiceclickonce2026)).
+  - id: efficient-text-to-image-video
+    label: Efficient Text-to-Image / Video
+    content: >-
+      Visual generation is expensive — can we make it faster without visibly
+      trading away quality? We target the redundancy inside the generation process
+      rather than retraining the model:
+      [CIAR](/publications?focus=ciarintervalbasedcollaborative2026) decodes images
+      collaboratively across intervals, and
+      [NaviCache](/publications?focus=navicachetesttimeself2026) caches and
+      self-calibrates video features at test time. We pair this with the data side
+      of controllable editing through the reasoning-enriched
+      [UnicEdit-10M](/publications?focus=unicedit10mdatasetbenchmark2026) benchmark.
+  - id: mllm-kv-cache-optimization
     label: MLLM KV-cache Optimization
-    content: Cache-aware optimization for long-context generation in multimodal large models.
+    content: >-
+      Long multimodal contexts make the KV cache the real memory bottleneck — but
+      not every token deserves to stay. Our idea is to decide what to evict by
+      reading modality and uncertainty, not raw attention scores:
+      [MadaKV](/publications?focus=madakvadaptivemodalityperception2025) is
+      modality-aware, [AccKV](/publications?focus=acckvtowardsefficientaudio2026)
+      cross-calibrates across audio and video, and
+      [RetentiveKV](/publications?focus=retentivekvstatespace2026) adds a state-space
+      memory for uncertainty-aware eviction.
+  - id: on-device-computer-use
+    label: On-device Computer Use
+    content: >-
+      We want agents that genuinely operate phones and computers under on-device
+      limits — and a way to know when to trust them.
+      [EcoAgent](/publications?focus=ecoagentefficientdevicecloud2026) divides work
+      between device and cloud to stay efficient, while
+      [Graph2Eval](/publications?focus=graph2evalautomaticmultimodaltask2026) and
+      [AEIA](/publications?focus=evaluatingrobustnessmultimodalagents2025) stress-test
+      such agents at scale, including against active environmental injection
+      attacks.
+  - id: large-small-device-cloud-collaboration
+    label: Large-small (Device-cloud) Model Collaboration
+    content: >-
+      How should a powerful cloud model and a constrained on-device model share
+      intelligence — and keep up with each user in real time? We migrate knowledge
+      across otherwise-incompatible architectures
+      ([MergeNet](/publications?focus=mergenetknowledgemigrationacross2025),
+      [CKI](/publications?focus=optimizeincompatibleparametersthrough2025)) and adapt
+      on-device recommenders to drift and personalization
+      ([Forward-OFA](/publications?focus=forwardonceallstructural2025),
+      [Persona](/publications?focus=tacklingdevicedatadistribution2025)), letting large
+      and small models correct one another
+      ([CoCorrRec](/publications?focus=devicecloudcollaborativecorrection2025),
+      [LSC4Rec](/publications?focus=collaborationlargelanguagemodels2025)).

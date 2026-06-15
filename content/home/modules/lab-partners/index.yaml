@@ -21,3 +21,8 @@ items:
     name: Tencent
     logo: tencent.svg
     href: https://www.tencent.com
+  - id: huawei
+    kind: company
+    name: Huawei
+    logo: huawei.svg
+    href: https://www.huawei.com

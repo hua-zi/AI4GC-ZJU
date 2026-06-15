@@ -15,28 +15,3 @@ items:
         href: https://github.com/InfiXAI/InfiGUIAgent
       - label: InfiGUI-R1
         href: https://github.com/InfiXAI/InfiGUI-R1
-  - id: ecoagent
-    name: EcoAgent
-    period: 2024–present
-    image: ecoagent.svg
-    desc: Speculative decoding and agent collaboration frameworks for faster, cost-efficient inference in real workflows.
-    tags:
-      - Inference
-      - Systems
-    links:
-      - label: Project
-        href: https://github.com/InfiXAI/EcoAgent
-  - id: foreact
-    name: ForeAct
-    period: 2025–present
-    image: foreact.svg
-    imageAlt: ForeAct visual foresight preview
-    desc: Visual foresight steering for vision-language-action models under efficient deployment constraints.
-    tags:
-      - Agents
-      - Multimodal
-    # Add the GitHub repo here once public, e.g.:
-    #   links:
-    #     - label: Code
-    #       href: https://github.com/InfiXAI/ForeAct
-    links: []

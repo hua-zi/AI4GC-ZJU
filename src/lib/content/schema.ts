@@ -49,6 +49,8 @@ export const publicationItemSchema = z.object({
   title: z.string(),
   authors: z.string(),
   authorList: z.array(z.string()).default([]),
+  /** Display names of corresponding authors; matching authorList entries get a ✉ marker. */
+  correspondingAuthors: z.array(z.string()).default([]),
   venue: z.string(),
   honor: z.string().optional(),
   href: z.string().optional(),

@@ -39,6 +39,18 @@ function formatAuthors(authors: BibAuthor[] | string | undefined): string {
   return authors.map(formatAuthor).join(", ");
 }
 
+// BibTeX `corresponding` field: author display names separated by " and " or ";".
+function toCorrespondingList(fields: Record<string, unknown>): string[] {
+  const raw = fieldToString(
+    fields.corresponding ?? fields.correspondingauthor ?? fields.correspondingauthors,
+  );
+  if (!raw) return [];
+  return raw
+    .split(/\s+and\s+|;/i)
+    .map((name) => name.trim())
+    .filter(Boolean);
+}
+
 function fieldToString(value: unknown): string {
   if (typeof value === "string") return value;
   if (Array.isArray(value)) return value.map(fieldToString).join(" ");
@@ -185,6 +197,7 @@ export function publicationFromBibEntry(entry: BibEntry): PublicationItem {
     title,
     authors: formatAuthors(fields.author as BibAuthor[] | string | undefined),
     authorList: toAuthorList(fields.author as BibAuthor[] | string | undefined),
+    correspondingAuthors: toCorrespondingList(fields),
     venue: year && !venue.includes(year) ? `${venue} ${year}`.trim() : venue,
     href: paperHref,
     blogHref: extractBlogHref(fields),

@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 import ContentSection from "@/components/layout/ContentSection";
 import PublicationEntry from "@/components/site/PublicationEntry";
 import SegmentedControl from "@/components/site/SegmentedControl";
@@ -31,6 +32,43 @@ export default function PublicationsPageClient({
   const [query, setQuery] = useState("");
   const [year, setYear] = useState<string>(ALL);
   const [topic, setTopic] = useState<string>(ALL);
+
+  // Deep links like /publications?focus=<cite-key> (e.g. from homepage research
+  // directions) center the target entry and briefly highlight it. We read the
+  // target from the query string rather than a URL hash: the App Router drops
+  // the hash on cached client navigations, but tracks query params reliably, so
+  // useSearchParams re-fires this on every arrival. Any collapsed year section
+  // containing the target is expanded first.
+  const searchParams = useSearchParams();
+  const focusId = searchParams.get("focus");
+  useEffect(() => {
+    if (!focusId) return;
+    let raf = 0;
+    let timeout = 0;
+    // Retry for a short window in case the target hasn't been laid out yet.
+    const focus = (remaining: number) => {
+      const target = document.getElementById(focusId);
+      if (!target) {
+        if (remaining > 0) raf = requestAnimationFrame(() => focus(remaining - 1));
+        return;
+      }
+      for (let node = target.parentElement; node; node = node.parentElement) {
+        if (node instanceof HTMLDetailsElement) node.open = true;
+      }
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      // Restart the animation even if the class is already present.
+      target.classList.remove("publication-entry--flash");
+      void target.offsetWidth;
+      target.classList.add("publication-entry--flash");
+      window.clearTimeout(timeout);
+      timeout = window.setTimeout(() => target.classList.remove("publication-entry--flash"), 3000);
+    };
+    focus(40);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+    };
+  }, [focusId]);
 
   const topics = useMemo(() => {
     const set = new Set<string>();
@@ -65,9 +103,7 @@ export default function PublicationsPageClient({
   });
 
   const currentPubs = atYear(visible, CURRENT_YEAR);
-  const currentPublished = currentPubs.filter((p) => !isPreprintVenue(p.venue));
-  const currentPreprints = currentPubs.filter((p) => isPreprintVenue(p.venue));
-  const prevYearItems = atYear(visible, CURRENT_YEAR - 1).filter((p) => !isPreprintVenue(p.venue));
+  const prevPubs = atYear(visible, CURRENT_YEAR - 1);
 
   const filterActive = query.trim() !== "" || topic !== ALL || year !== ALL;
 
@@ -86,7 +122,7 @@ export default function PublicationsPageClient({
   );
 
   const hasAny =
-    currentPubs.length + prevYearItems.length + beforeItems.length +
+    currentPubs.length + prevPubs.length + beforeItems.length +
       atYear(visible, CURRENT_YEAR - 2).length + atYear(visible, CURRENT_YEAR - 3).length >
     0;
 
@@ -141,30 +177,8 @@ export default function PublicationsPageClient({
           </div>
         </div>
 
-        {currentPubs.length > 0 ? (
-          <section className="publication-year-group">
-            <h2 className="publication-year-group__heading">{CURRENT_YEAR}</h2>
-            {currentPublished.length > 0 ? (
-              <div className="publication-subgroup">
-                <h3 className="publication-subgroup__heading">Published</h3>
-                {currentPublished.map(renderEntry)}
-              </div>
-            ) : null}
-            {currentPreprints.length > 0 ? (
-              <div className="publication-subgroup">
-                <h3 className="publication-subgroup__heading">Preprints · arXiv</h3>
-                {currentPreprints.map(renderEntry)}
-              </div>
-            ) : null}
-          </section>
-        ) : null}
-
-        {prevYearItems.length > 0 ? (
-          <section className="publication-year-group">
-            <h2 className="publication-year-group__heading">{CURRENT_YEAR - 1}</h2>
-            {prevYearItems.map(renderEntry)}
-          </section>
-        ) : null}
+        <SplitYearSection label={String(CURRENT_YEAR)} items={currentPubs} render={renderEntry} />
+        <SplitYearSection label={String(CURRENT_YEAR - 1)} items={prevPubs} render={renderEntry} />
 
         <CollapsibleYear label={String(CURRENT_YEAR - 2)} items={atYear(visible, CURRENT_YEAR - 2)} open={filterActive} render={renderEntry} />
         <CollapsibleYear label={String(CURRENT_YEAR - 3)} items={atYear(visible, CURRENT_YEAR - 3)} open={filterActive} render={renderEntry} />
@@ -173,6 +187,44 @@ export default function PublicationsPageClient({
         {!hasAny ? <p className="publications-empty">No publications match your filters.</p> : null}
       </ContentSection>
     </main>
+  );
+}
+
+function SplitYearSection({
+  label,
+  items,
+  render,
+}: {
+  label: string;
+  items: PublicationItem[];
+  render: (pub: PublicationItem) => ReactNode;
+}) {
+  if (items.length === 0) {
+    return null;
+  }
+  const preprints = items.filter((p) => isPreprintVenue(p.venue));
+  const published = items.filter((p) => !isPreprintVenue(p.venue));
+
+  return (
+    <section className="publication-year-group">
+      <h2 className="publication-year-group__heading">{label}</h2>
+      {preprints.length === 0 ? (
+        published.map(render)
+      ) : (
+        <>
+          {published.length > 0 ? (
+            <div className="publication-subgroup">
+              <h3 className="publication-subgroup__heading">Published</h3>
+              {published.map(render)}
+            </div>
+          ) : null}
+          <div className="publication-subgroup">
+            <h3 className="publication-subgroup__heading">Preprints · arXiv</h3>
+            {preprints.map(render)}
+          </div>
+        </>
+      )}
+    </section>
   );
 }
 

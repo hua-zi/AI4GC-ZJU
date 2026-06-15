@@ -41,6 +41,21 @@ const isPreprintVenue = (v) => /corr|arxiv|techrxiv/i.test(v || "");
 const isMinorEntry = (title) =>
   /\(student abstract\)|\(doctoral consortium\)|\(demonstration[^)]*\)|\(poster[^)]*\)|\(extended abstract\)|\bworkshop$/i.test(title || "");
 
+// Venues kept out of the publication list entirely: workshops/companion volumes,
+// and the CDPD / CICAI venues. Never re-suggest papers from these.
+const isExcludedVenue = (venue) =>
+  /workshop|companion/i.test(venue || "") || /^(cdpd|cicai)\b/i.test(venue || "");
+
+// Titles deliberately kept out of the publication list (off the lab's main line,
+// or short/abstract papers DBLP doesn't otherwise flag). Never re-suggest these.
+const IGNORE_TITLES = new Set(
+  [
+    "Improving Music Recommendation With Fine-Grained Content-Based Behavior Retrieval",
+    "RASTP: Representation-Aware Semantic Token Pruning for Generative Recommendation with Semantic Identifiers",
+    "AutoGeo: Automating Geometric Image Dataset Creation for Enhanced Geometry Understanding",
+  ].map(normTitle),
+);
+
 function curlText(url) {
   return execFileSync("curl", ["-s", "-m", "60", "-A", "ai4gc-website-dblp-sync/1.0", url], {
     encoding: "utf8",
@@ -160,7 +175,14 @@ for (const rec of records) {
 
 // NEW = published DBLP papers not in the bib
 const newPubs = records
-  .filter((rec) => !rec.preprint && !isMinorEntry(rec.title) && !bibByTitle.has(normTitle(rec.title)))
+  .filter(
+    (rec) =>
+      !rec.preprint &&
+      !isMinorEntry(rec.title) &&
+      !isExcludedVenue(rec.venue) &&
+      !IGNORE_TITLES.has(normTitle(rec.title)) &&
+      !bibByTitle.has(normTitle(rec.title)),
+  )
   .sort((a, b) => b.year - a.year);
 
 console.log(`\n========== TITLE casing fixes — ${titleFixes.size} ==========`);
