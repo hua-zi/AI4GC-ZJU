@@ -53,4 +53,4 @@ In addition, I worked on cloud-edge collaborative evolution of large and small m
 
 ## Now
 
-**Now:** Ph.D. student @ ZJU, the State Key Lab of CAD&CG. 
+**Now:** Ph.D. student @ ZJU, the State Key Lab of CAD&CG.
