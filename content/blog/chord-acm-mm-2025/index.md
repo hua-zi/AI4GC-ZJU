@@ -6,10 +6,9 @@ links:
   - kind: paper
     href: https://dl.acm.org/doi/abs/10.1145/3746027.3755632
 desc: >-
-  CHORD personalizes an on-device sequential recommender without any on-device
-  training: a per-user "lottery ticket" — a channel-wise mixed-precision
-  quantization strategy — is searched for, encoded in 2 bits per channel, and
-  applied to frozen weights in a single forward pass. Accepted to ACM MM 2025.
+  CHORD customizes a hybrid-precision on-device recommendation model for each
+  instance, achieving personalized, resource-adaptive deployment in a single
+  forward pass. Accepted to ACM MM 2025.
 tags:
   - Recommender Systems
   - Device-Cloud Collaboration

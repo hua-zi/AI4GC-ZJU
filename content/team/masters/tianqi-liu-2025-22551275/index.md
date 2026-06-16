@@ -3,14 +3,13 @@ startDate: 2025
 name: Tianqi Liu
 photo: avatar.jpg
 bio: >-
-  M.S. student at AI4GC Lab, Zhejiang University, working on recommender systems
-  and LLM agents — model customization, lightweight on-device deployment, and
-  reinforcement-learning-based refinement.
+  M.S. student working on recommender systems and LLM agents, including model
+  customization, lightweight on-device deployment, and reinforcement-learning-based
+  refinement.
 tags:
   - Recommender Systems
   - LLM Agents
   - Reinforcement Learning
-  - Model Customization
 email: unknownltq@gmail.com
 profile: true
 links:
