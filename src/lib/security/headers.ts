@@ -15,14 +15,11 @@ const SHARED_SECURITY_HEADERS: SecurityHeader[] = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
 ];
 
-// Site-wide crawler block — sent only when indexing is disabled
-// (content/site.yaml → indexable: false). When indexing is enabled we must NOT
-// send this header, or it overrides per-page robots meta and search engines
-// refuse to index ("noindex detected in X-Robots-Tag").
-const NOINDEX_HEADER: SecurityHeader = {
-  key: "X-Robots-Tag",
-  value: "noindex, nofollow, noarchive, nosnippet",
-};
+// NOTE: indexing is controlled by `content/site.yaml` → `indexable`, applied via
+// robots.txt (src/app/robots.ts) and per-page robots meta (layout + [slug]).
+// We intentionally do NOT set an `X-Robots-Tag: noindex` response header here:
+// a hardcoded one previously overrode the per-page meta and made search engines
+// refuse to index even when indexing was enabled.
 
 const PRODUCTION_SECURITY_HEADERS: SecurityHeader[] = [
   {
@@ -46,17 +43,10 @@ const PRODUCTION_SECURITY_HEADERS: SecurityHeader[] = [
   },
 ];
 
-export function getSecurityHeaders(options: { indexable?: boolean } = {}): SecurityHeader[] {
-  const headers = [...SHARED_SECURITY_HEADERS];
-
-  // Block crawlers site-wide only when indexing is turned off.
-  if (!options.indexable) {
-    headers.push(NOINDEX_HEADER);
-  }
-
+export function getSecurityHeaders(): SecurityHeader[] {
   if (process.env.NODE_ENV === "production") {
-    headers.push(...PRODUCTION_SECURITY_HEADERS);
+    return [...SHARED_SECURITY_HEADERS, ...PRODUCTION_SECURITY_HEADERS];
   }
 
-  return headers;
+  return SHARED_SECURITY_HEADERS;
 }

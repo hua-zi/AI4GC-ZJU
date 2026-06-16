@@ -13,16 +13,9 @@ describe("getSecurityHeaders", () => {
     expect(keys).toContain("X-Content-Type-Options");
   });
 
-  it("sends X-Robots-Tag noindex only when the site is not indexable", () => {
-    const blocked = getSecurityHeaders({ indexable: false });
-    expect(blocked.find((h) => h.key === "X-Robots-Tag")?.value).toContain("noindex");
-
-    // Default (no option) is treated as not-indexable → still blocked.
-    expect(getSecurityHeaders().map((h) => h.key)).toContain("X-Robots-Tag");
-
-    // When indexing is enabled, the header must be absent so search engines can index.
-    const indexable = getSecurityHeaders({ indexable: true });
-    expect(indexable.map((h) => h.key)).not.toContain("X-Robots-Tag");
+  it("does not set a site-wide X-Robots-Tag noindex header (indexing is robots.txt/meta-driven)", () => {
+    const keys = getSecurityHeaders().map((header) => header.key);
+    expect(keys).not.toContain("X-Robots-Tag");
   });
 
   it("adds HSTS and CSP only in production", () => {
