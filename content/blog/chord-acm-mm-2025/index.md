@@ -15,14 +15,12 @@ tags:
   - Device-Cloud Collaboration
   - Mixed-precision Quantization
   - On-device Deployment
-cover: cover.png
-coverAlt: Overview of CHORD — on-device profiling, multi-granularity importance, and channel-wise mixed-precision strategy generation
 ---
 We are happy to share that **CHORD** has been accepted to **ACM MM 2025**. CHORD studies how to give each user a personalized recommendation model that runs **on their own device**, without training or fine-tuning a separate model per user.
 
 On-device recommendation is attractive because it is private, low-latency, and reduces server load. Making the on-device model *personal*, however, is expensive: one either fine-tunes on the device, which requires backpropagation, or ships a fresh model to every user, which consumes substantial bandwidth. CHORD instead casts personalization as a **quantization** problem rather than a **training** problem.
 
-## The problem: personalize an on-device model without training it
+## The challenge: customization and compression at once
 
 Device-cloud recommendation faces several tensions at once:
 
@@ -32,7 +30,7 @@ Device-cloud recommendation faces several tensions at once:
 
 The result is a coupled requirement: a model must be **customized** to the user and **compressed** to the device *simultaneously*, while keeping device-cloud communication inexpensive.
 
-## CHORD in one idea: frozen weights + a channel-wise quantization strategy
+## CHORD in one idea: find the ideal channel-wise quantization strategy for each instance
 
 CHORD is built on a single principle:
 
@@ -50,7 +48,7 @@ The strategy is produced by three components:
 2. **Multi-granularity sensitivity generator.** A set of **hypernetworks** estimates parameter importance at three granularities — **element**, **filter**, and **layer**. Filter-level importance is reconstructed from element-level signals and then weighted by layer-level importance.
 3. **Personalized strategy generator.** The combined importance is converted into a **channel-wise mixed-precision strategy**: sensitive channels retain higher precision, the remainder are quantized lower. Only the strategy — not the weights — is encoded and transmitted, and it is decoded on-device according to the available resource budget.
 
-![Overview of CHORD: on-device profiling produces interest embeddings; multi-level hypernetworks estimate intra-layer (filter/element) and inter-layer (layer) importance; a channel-wise mixed-precision strategy is composed and applied to shared frozen weights in a single forward pass.](cover.png)
+![Overview of CHORD: on-device profiling produces interest embeddings; multi-level hypernetworks estimate intra-layer (filter/element) and inter-layer (layer) importance; a channel-wise mixed-precision strategy is composed and applied to shared frozen weights in a single forward pass.](chord-overview.png)
 
 ## Why it is efficient
 
