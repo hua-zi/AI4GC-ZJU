@@ -3,8 +3,8 @@ name: Shengyu Zhang
 photo: photo.jpg
 bio: >-
   ZJU100 Young Professor and Principal Investigator of AI4GC Lab at Zhejiang
-  University. His research spans edge-cloud collaborative intelligence for
-  large and small models, multimedia computing, and recommendation systems.
+  University. His research spans Device-cloud Collaboration, Multi-modal
+  Learning, Computer Use Agents, AIGC, and Efficient AI.
 tags:
   - ZJU100
 email: sy_zhang@zju.edu.cn
@@ -22,4 +22,4 @@ links:
 ---
 Shengyu Zhang is a ZJU100 Young Professor and doctoral supervisor at Zhejiang University, where he leads AI4GC Lab. He is a Qizhen Excellent Young Scholar and was selected for the 10th China Association for Science and Technology Young Talent Lift Program.
 
-His research focuses on edge-cloud collaborative intelligence for large and small models, multimedia computing, and recommendation systems. He has published more than forty papers in top venues such as TPAMI, TKDE, KDD, and CVPR.
+His research spans Device-cloud Collaboration, Multi-modal Learning, Computer Use Agents, AIGC, and Efficient AI. He has published more than forty papers in top venues such as TPAMI, TKDE, KDD, and CVPR.
