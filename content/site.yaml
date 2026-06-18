@@ -1,7 +1,7 @@
 # site.yaml — global site identity, navigation, and display settings.
 
 name: AI4GC Lab
-tagline: Efficient AI systems research at Zhejiang University.
+tagline: Efficient and deployable multimodal AI at Zhejiang University.
 description: AI4GC Lab — efficient AI systems for multimodal generation, agents, and deployable model optimization.
 # Absolute production URL for canonical links, sitemap, and share previews.
 # Leave empty during development; set at launch (or override with the SITE_URL env var).
