@@ -6,6 +6,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import SiteFooter from "@/components/site/SiteFooter";
 import JsonLd from "@/components/site/JsonLd";
+import { LanguageProvider } from "@/lib/i18n/language-context";
 import { getSiteConfig } from "@/lib/content";
 import { absoluteUrl, getSiteUrl } from "@/lib/site/site-url";
 
@@ -122,32 +123,35 @@ export default async function RootLayout({
         }
       >
         {!isAdminRoute ? <JsonLd data={organizationJsonLd} /> : null}
-        {!isAdminRoute ? (
-          <a href="#main-content" className="skip-link">
-            Skip to main content
-          </a>
-        ) : null}
-        {!isAdminRoute ? (
-          <Navbar
-            name={site.name}
-            logo={site.logo}
-            schoolLogo={site.schoolLogo}
-            schoolName={site.schoolName}
-            schoolHref={site.schoolHref}
-            nav={site.nav}
-          />
-        ) : null}
-        <div id="main-content" tabIndex={-1} className="main-region">
-          {children}
-        </div>
-        {!isAdminRoute ? (
-          <SiteFooter
-            name={site.name}
-            tagline={site.tagline}
-            nav={site.nav}
-            footer={site.footer}
-          />
-        ) : null}
+        <LanguageProvider>
+          {!isAdminRoute ? (
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
+          ) : null}
+          {!isAdminRoute ? (
+            <Navbar
+              name={site.name}
+              logo={site.logo}
+              schoolLogo={site.schoolLogo}
+              schoolName={site.schoolName}
+              schoolHref={site.schoolHref}
+              nav={site.nav}
+            />
+          ) : null}
+          <div id="main-content" tabIndex={-1} className="main-region">
+            {children}
+          </div>
+          {!isAdminRoute ? (
+            <SiteFooter
+              name={site.name}
+              tagline={site.tagline}
+              taglineZh={site.taglineZh}
+              nav={site.nav}
+              footer={site.footer}
+            />
+          ) : null}
+        </LanguageProvider>
         {/* Vercel Web Analytics — cookieless page-view tracking on public pages.
             Script + beacon are same-origin (/_vercel/insights/*), so the CSP
             (script-src 'self', connect-src 'self') already allows it. */}

@@ -265,6 +265,16 @@ function loadModuleSource(source: HomeModuleSource, index: number): HomeModule {
     };
     delete record.body;
 
+    // Optional Chinese body in a sibling `index.zh.md` (body only; frontmatter ignored).
+    const zhPath = source.filePath.replace(/index\.md$/i, "index.zh.md");
+    if (zhPath !== source.filePath && existsSync(zhPath)) {
+      const { content: zhContent } = matter(readFileSync(zhPath, "utf-8"));
+      const trimmed = zhContent.trim();
+      if (trimmed) {
+        record.markdownZh = trimmed;
+      }
+    }
+
     return parseModuleRecord(record, index, [], source.id);
   }
 

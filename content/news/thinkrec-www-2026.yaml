@@ -1,10 +1,13 @@
 date: April 2026
 title: ThinkRec accepted to WWW 2026
+titleZh: ThinkRec 被 WWW 2026 接收
 type: Paper
+typeZh: 论文
 desc: >-
   ThinkRec reframes LLM-based recommendation as a reasoning problem, letting the
   model explicitly reason about user preferences to improve recommendation
   quality and user trust.
+descZh: ThinkRec 将基于大模型的推荐重构为一个推理问题：让模型显式地推理用户偏好，从而提升推荐质量与用户信任。
 featured: true
 image: /blog-assets/thinkrec-www-2026/thinkrec.webp
 imageAlt: Overview of the proposed ThinkRec.

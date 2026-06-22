@@ -6,10 +6,13 @@
 
 date: Feb 2026
 title: Graph2Eval accepted to CVPR 2026
+titleZh: Graph2Eval 被 CVPR 2026 接收
 type: Paper
+typeZh: 论文
 desc: >-
   Graph2Eval turns documents and web pages into a knowledge-graph task space for
   scalable, controllable evaluation of RAG and web agents.
+descZh: Graph2Eval 将文档与网页转化为基于知识图谱的任务空间，从而对 RAG 与网页智能体开展可扩展、可控的系统性评测。
 featured: true
 image: /blog-assets/graph2eval-cvpr-2026/graph2eval.webp
 imageAlt: Graph2Eval knowledge-graph task generation overview

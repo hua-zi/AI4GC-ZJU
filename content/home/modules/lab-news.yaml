@@ -1,7 +1,9 @@
 type: news
 title: News
+titleZh: 最新动态
 source: featured
 limit: 4
 loadMore:
   enabled: true
   label: Load More
+  labelZh: 加载更多

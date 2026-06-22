@@ -1,5 +1,7 @@
 export type LinkItem = {
   label: string;
+  /** Optional Chinese label, shown when the site language is set to 中文. */
+  labelZh?: string;
   href: string;
   external?: boolean;
 };
@@ -24,11 +26,16 @@ export type NewsItem = {
   id: string;
   date: string;
   title: string;
+  titleZh?: string;
   desc: string;
+  descZh?: string;
   href?: string;
   featured?: boolean;
   /** Short category label shown as a badge on the news image (e.g. "Paper", "Open Source"). */
   type?: string;
+  typeZh?: string;
+  /** Stable slug for the badge colour, derived from the English `type` during localization. */
+  typeSlug?: string;
   image?: string;
   imageAlt?: string;
   links: LinkItem[];
@@ -129,7 +136,9 @@ export type TeamContent = {
 export type HomeHighlight = {
   id: string;
   label: string;
+  labelZh?: string;
   content: string;
+  contentZh?: string;
   image?: string;
   imageAlt?: string;
   links: LinkItem[];
@@ -137,8 +146,11 @@ export type HomeHighlight = {
 
 export type HomeHero = {
   title: string;
+  titleZh?: string;
   subtitle: string;
+  subtitleZh?: string;
   kicker?: string;
+  kickerZh?: string;
   backgroundImage?: string;
   brandMark?: string;
   featuredNews?: HomeHeroFeaturedNews;
@@ -149,6 +161,8 @@ export type HomeHero = {
 export type HomeModuleBase = {
   id: string;
   enabled: boolean;
+  /** Optional Chinese section title, shown in 中文 mode. */
+  titleZh?: string;
 };
 
 export type HomeHighlightsModule = HomeModuleBase & {
@@ -165,6 +179,7 @@ export type HomeNewsModule = HomeModuleBase & {
     loadMore: {
       enabled: boolean;
       label: string;
+      labelZh?: string;
     };
   };
 
@@ -172,17 +187,22 @@ export type HomeProseModule = HomeModuleBase & {
     type: "prose";
     title: string;
     body?: string[];
+    bodyZh?: string[];
     markdown?: string;
+    markdownZh?: string;
   };
 
 export type HomeProject = {
   id: string;
   name: string;
   desc?: string;
+  descZh?: string;
   period?: string;
+  periodZh?: string;
   image?: string;
   imageAlt?: string;
   tags?: string[];
+  tagsZh?: string[];
   links: LinkItem[];
 };
 
@@ -250,6 +270,7 @@ export type SiteFooter = {
 export type SiteConfig = {
   name: string;
   tagline: string;
+  taglineZh?: string;
   description: string;
   url: string;
   indexable: boolean;

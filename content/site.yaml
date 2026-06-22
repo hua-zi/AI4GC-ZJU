@@ -2,6 +2,8 @@
 
 name: AI4GC Lab
 tagline: Efficient and deployable multimodal AI at Zhejiang University.
+# taglineZh / labelZh: Chinese strings shown when the site language toggle is set to 中文.
+taglineZh: 浙江大学 · 聚焦高效、可落地的多模态人工智能
 description: AI4GC Lab — efficient AI systems for multimodal generation, agents, and deployable model optimization.
 # Absolute production URL for canonical links, sitemap, and share previews.
 # Leave empty during development; set at launch (or override with the SITE_URL env var).
@@ -27,14 +29,19 @@ blogPageVisibleCount: 10
 
 nav:
   - label: About
+    labelZh: 关于
     href: /
   - label: News
+    labelZh: 新闻
     href: /news
   - label: Blog
+    labelZh: 博客
     href: /blog
   - label: Publications
+    labelZh: 论文
     href: /publications
   - label: Team
+    labelZh: 团队
     href: /team
 
 footer:

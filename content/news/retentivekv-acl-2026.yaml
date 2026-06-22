@@ -1,10 +1,13 @@
 date: Apr 2026
 title: RetentiveKV accepted to ACL 2026 Findings
+titleZh: RetentiveKV 被 ACL 2026 Findings 接收
 type: Paper
+typeZh: 论文
 desc: >-
   RetentiveKV reformulates KV cache eviction from discrete context truncation to
   continuous memory evolution using entropy-driven State Space Models, achieving
   5× KV cache compression and 1.5× decoding acceleration on multimodal benchmarks.
+descZh: RetentiveKV 重新审视 KV 缓存：不再依赖离散的上下文截断，而是借助熵驱动的状态空间模型实现连续的记忆演化，在多模态基准上达成 5 倍 KV 缓存压缩与 1.5 倍解码加速。
 featured: true
 image: /blog-assets/retentivekv-acl-2026/overall.png
 imageAlt: RetentiveKV framework overview

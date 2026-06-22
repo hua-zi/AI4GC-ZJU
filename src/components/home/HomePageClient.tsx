@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import HeroBanner from "@/components/HeroBanner";
 import HomeHeroMotion from "@/components/home/HomeHeroMotion";
 import HomeModules from "@/components/home/HomeModules";
 import ContentSection from "@/components/layout/ContentSection";
+import { useLang } from "@/lib/i18n/language-context";
+import { localizeHome, localizeNews } from "@/lib/i18n/localize-home";
 import type { GitHubStarsMap } from "@/lib/github-stars";
 import type { HomeContent, NewsItem } from "@/types/lab";
 
@@ -18,11 +20,15 @@ type HomePageClientProps = {
 };
 
 export default function HomePageClient({
-  home,
-  newsItems,
+  home: homeContent,
+  newsItems: rawNewsItems,
   defaultNewsLimit,
   githubStars,
 }: HomePageClientProps) {
+  const { lang } = useLang();
+  const home = useMemo(() => localizeHome(homeContent, lang), [homeContent, lang]);
+  const newsItems = useMemo(() => localizeNews(rawNewsItems, lang), [rawNewsItems, lang]);
+
   return (
     <main className="home-page">
       <HomeHeroMotion>

@@ -105,6 +105,7 @@ There is no `content/pages/` directory. Profile pages are the Markdown body in e
 - Homepage hero optional `brandMark` (prefer `/content-assets/...`) shown on the right of `content/home/hero.yaml`.
 - BibTeX arXiv entries: use `journal={arXiv}` — build normalizes long `arXiv preprint arXiv:…` strings to display as `arXiv · {year}` on profile/publication lists.
 - Profile `@blog` section (`## @blog …` in member `index.md`): **External** group lists `kind: blog-channel` links (WeChat, X, Xiaohongshu, etc.) as `label` + optional `desc` cards; **On-site** group lists `/blog/…` posts whose `authorId` / `authorIds` point at the member. The whole section is omitted when both groups would be empty. GitHub / Scholar 等写在普通 `links`（无 `blog-channel`），显示在 Hero。内容渠道主页用 `blog-channel` 挂在 **External**，避免与 Hero 重复同一 URL。
+- Homepage bilingual toggle: navbar EN / 中文 switch (default English, persisted in `localStorage` `ai4gc-lang`, client-only so SEO stays English). Chinese text lives beside the English fields as optional `*Zh` keys (`titleZh`, `subtitleZh`, `descZh`, `labelZh`, `contentZh`, `periodZh`, `tagsZh`, `typeZh`, `taglineZh`, news `titleZh`/`descZh`; prose body in a sibling `index.zh.md`). Missing `*Zh` falls back to English. Wiring: `src/lib/i18n/language-context.tsx` (`useLang`/`pick`, `useSyncExternalStore`), `src/lib/i18n/localize-home.ts`, `src/components/site/LanguageToggle.tsx`. Full field list in `content/guidance.md` → 首页 → 中英文切换.
 - Blog posts: optional frontmatter `links` array renders a prominent resource-button row (kinds: `paper`/`code`/`xiaohongshu`/`wechat`/`website`) injected after the intro, before the first `##` heading (`src/components/blog/BlogResourceLinks.tsx`, resolved in `src/lib/content/blog-links.ts`). Prose/“Further reading” links still live in the Markdown body. No auto-generated References block.
 
 ## Key code paths
@@ -112,6 +113,7 @@ There is no `content/pages/` directory. Profile pages are the Markdown body in e
 | Area | Path |
 | --- | --- |
 | Site config | `src/lib/content/load-site.ts` |
+| Homepage EN/中文 toggle | `src/lib/i18n/language-context.tsx`, `src/lib/i18n/localize-home.ts`, `src/components/site/LanguageToggle.tsx` |
 | Team + profiles | `src/lib/content/load-team.ts` |
 | Profile body segments + papers | `src/lib/content/resolve-profile-papers.ts` |
 | Markdown render | `src/components/markdown/MarkdownBody.tsx` |

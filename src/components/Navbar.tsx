@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import LanguageToggle from "@/components/site/LanguageToggle";
+import { pick, useLang } from "@/lib/i18n/language-context";
 import { cn } from "@/lib/utils";
 import type { LinkItem } from "@/types/lab";
 
@@ -26,6 +28,7 @@ export default function Navbar({
   nav,
 }: NavbarProps) {
   const pathname = usePathname();
+  const { lang } = useLang();
   const [open, setOpen] = useState(false);
 
   const closeMenu = () => setOpen(false);
@@ -72,7 +75,11 @@ export default function Navbar({
           onClick={() => setOpen((value) => !value)}
         >
           {open ? <X aria-hidden="true" size={22} strokeWidth={2} /> : <Menu aria-hidden="true" size={22} strokeWidth={2} />}
-          <span className="site-nav__toggle-label">{open ? "Close menu" : "Open menu"}</span>
+          <span className="site-nav__toggle-label">
+            {open
+              ? pick(lang, "Close menu", "关闭菜单")
+              : pick(lang, "Open menu", "打开菜单")}
+          </span>
         </button>
 
         <div
@@ -85,6 +92,8 @@ export default function Navbar({
                 !link.external &&
                 (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href));
 
+              const label = pick(lang, link.label, link.labelZh);
+
               if (link.external) {
                 return (
                   <a
@@ -95,7 +104,7 @@ export default function Navbar({
                     className="site-link site-link--quiet site-nav__menu-link"
                     onClick={closeMenu}
                   >
-                    {link.label}
+                    {label}
                   </a>
                 );
               }
@@ -112,10 +121,11 @@ export default function Navbar({
                   aria-current={isActive ? "page" : undefined}
                   onClick={closeMenu}
                 >
-                  {link.label}
+                  {label}
                 </Link>
               );
             })}
+            <LanguageToggle className="site-nav__lang-toggle" />
           </div>
         </div>
       </div>

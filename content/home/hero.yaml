@@ -3,16 +3,22 @@
 # backgroundImage: optional image path (prefer /content-assets/...)
 # brandMark: optional image on hero right (prefer /content-assets/...)
 
+# kickerZh / subtitleZh / labelZh: Chinese text shown when the site language is 中文.
 kicker: Zhejiang University
+kickerZh: 浙江大学
 title: AI4GC Lab
 subtitle: We build efficient multimodal models and computer-use agents—and the systems work to run them outside the lab.
+subtitleZh: 实验室致力于打造高效的多模态模型和终端智能体
 brandMark: /content-assets/ai4gclab/AI4GC.png
 actions:
   - label: Publications
+    labelZh: 论文
     href: /publications
   - label: Team
+    labelZh: 团队
     href: /team
   - label: Recruiting Form
+    labelZh: 欢迎加入！
     href: https://docs.qq.com/form/page/DSmJQb0d5WkdsbmZP#/fill
     external: true
 channels:

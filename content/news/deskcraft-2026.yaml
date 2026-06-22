@@ -1,10 +1,13 @@
 date: Jun 2026
 title: DeskCraft is open-source — a benchmark for desktop GUI agents
+titleZh: DeskCraft 开源：一套面向桌面 GUI 智能体的基准
 type: Open Source
+typeZh: 开源
 desc: >-
   DeskCraft puts desktop GUI agents to work on real professional workflows —
   538 executable tasks spanning office, design, video, audio, 3D, and multi-app
   software, with human-in-the-loop collaboration. Code and paper are out now.
+descZh: DeskCraft 让桌面 GUI 智能体在真实的专业工作流中接受考验——538 个可执行任务，覆盖办公、设计、视频、音频、3D 及多应用软件，并支持人机协作。代码与论文均已开放。
 featured: true
 image: /home-assets/lab-projects/deskcraft.png
 imageAlt: DeskCraft desktop GUI agent benchmark overview

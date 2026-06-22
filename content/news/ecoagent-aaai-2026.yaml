@@ -1,10 +1,13 @@
 date: Jan 2026
 title: EcoAgent accepted to AAAI 2026
+titleZh: EcoAgent 被 AAAI 2026 接收
 type: Paper
+typeZh: 论文
 desc: >-
   EcoAgent is a closed-loop device-cloud multi-agent framework for mobile
   automation that matches cloud-only baselines on AndroidWorld while cutting
   MLLM tokens by 96% and per-step latency from 15.3s to 3.9s.
+descZh: EcoAgent 是面向移动端自动化的端云闭环多智能体框架。在 AndroidWorld 上，其性能追平纯云端方案，同时将多模态大模型的 token 用量降低 96%，单步延迟从 15.3 秒压缩至 3.9 秒。
 featured: true
 image: /blog-assets/ecoagent-aaai-2026/ecoagent-workflow.webp
 imageAlt: EcoAgent workflow — cloud-side Dual-ReACT planning closes the loop with device-side execution and pre-understood observation feedback.

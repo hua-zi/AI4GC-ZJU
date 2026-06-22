@@ -3,6 +3,7 @@ import { normalizeMemberEmail } from "@/lib/content/member-email";
 
 export const linkItemSchema = z.object({
   label: z.string(),
+  labelZh: z.string().optional(),
   href: z.string(),
   external: z.boolean().optional(),
 });
@@ -30,11 +31,20 @@ export const newsItemSchema = z.object({
   id: z.string(),
   date: z.string(),
   title: z.string(),
+  titleZh: z.string().optional(),
   desc: z.string(),
+  descZh: z.string().optional(),
   href: z.string().optional(),
   featured: z.boolean().optional(),
   /** Short category label shown as a badge on the news image (e.g. "Paper", "Open Source"). */
   type: z
+    .string()
+    .optional()
+    .transform((value) => {
+      const trimmed = value?.trim();
+      return trimmed ? trimmed : undefined;
+    }),
+  typeZh: z
     .string()
     .optional()
     .transform((value) => {
@@ -186,7 +196,9 @@ export const teamMemberSchema = teamMemberFrontmatterSchema
 export const homeHighlightSchema = z.object({
   id: z.string(),
   label: z.string(),
+  labelZh: z.string().optional(),
   content: z.string(),
+  contentZh: z.string().optional(),
   image: z.string().optional(),
   imageAlt: z.string().optional(),
   links: z.array(linkItemSchema).default([]),
@@ -196,10 +208,13 @@ export const homeProjectSchema = z.object({
   id: z.string(),
   name: z.string(),
   desc: z.string().optional(),
+  descZh: z.string().optional(),
   period: z.string().optional(),
+  periodZh: z.string().optional(),
   image: z.string().optional(),
   imageAlt: z.string().optional(),
   tags: z.array(z.string()).default([]),
+  tagsZh: z.array(z.string()).optional(),
   links: z.array(linkItemSchema).default([]),
 });
 
@@ -263,8 +278,11 @@ export const homeHeroChannelSchema = z
 
 export const homeHeroSchema = z.object({
   title: z.string(),
+  titleZh: z.string().optional(),
   subtitle: z.string(),
+  subtitleZh: z.string().optional(),
   kicker: z.string().optional(),
+  kickerZh: z.string().optional(),
   backgroundImage: z.string().optional(),
   brandMark: z.string().optional(),
   featuredNews: homeHeroFeaturedNewsSchema.optional(),
@@ -280,6 +298,7 @@ export const homeSectionsSchema = z.object({
 const homeModuleBaseSchema = z.object({
   id: z.string(),
   enabled: z.boolean().default(true),
+  titleZh: z.string().optional(),
 });
 
 export const homeHighlightsModuleSchema = homeModuleBaseSchema.extend({
@@ -297,6 +316,7 @@ export const homeNewsModuleSchema = homeModuleBaseSchema.extend({
     .object({
       enabled: z.boolean().default(true),
       label: z.string().default("Load More"),
+      labelZh: z.string().optional(),
     })
     .default({ enabled: true, label: "Load More" }),
 });
@@ -306,7 +326,9 @@ export const homeProseModuleSchema = homeModuleBaseSchema
     type: z.literal("prose"),
     title: z.string(),
     body: z.array(z.string()).optional(),
+    bodyZh: z.array(z.string()).optional(),
     markdown: z.string().optional(),
+    markdownZh: z.string().optional(),
   })
   .superRefine((module, ctx) => {
     const hasBody = Array.isArray(module.body) && module.body.length > 0;
@@ -373,6 +395,7 @@ export const siteFooterSchema = z.object({
 export const siteConfigSchema = z.object({
   name: z.string().default("AI4GC Lab"),
   tagline: z.string().default(""),
+  taglineZh: z.string().optional(),
   description: z.string().default(""),
   /** Absolute production URL (e.g. https://ai4gc.zju.edu.cn); overridden by SITE_URL env. */
   url: z.string().default(""),

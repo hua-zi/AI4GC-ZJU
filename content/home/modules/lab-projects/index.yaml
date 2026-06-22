@@ -1,9 +1,13 @@
+# Chinese fields (titleZh / descZh / periodZh / tagsZh) are shown when the site language is 中文.
+# Keep tagsZh aligned 1:1 with tags so topic filtering stays consistent.
 type: projects
 title: Projects
+titleZh: 研究项目
 items:
   - id: infigui-series
     name: InfiGUI Series
     period: 2024–present
+    periodZh: 2024 至今
     image: infigui-agent.svg
     imageAlt: InfiGUI series GUI agents
     desc: >-
@@ -11,9 +15,13 @@ items:
       InfiGUIAgent — a multimodal generalist agent with native reasoning and reflection;
       InfiGUI-R1 — from reactive actors to deliberative reasoners via reinforcement learning;
       InfiGUI-G1 — stronger GUI grounding through adaptive exploration policy optimization.
+    descZh: 面向电脑操作的轻量级 GUI 智能体家族，迭代演进出三项工作：InfiGUIAgent 内建推理与反思机制，是具备通用能力的多模态智能体；InfiGUI-R1 借助强化学习，从被动执行迈向主动推理；InfiGUI-G1 则通过自适应探索的策略优化，显著提升界面定位精度。
     tags:
       - GUI Agents
       - Multimodal
+    tagsZh:
+      - GUI 智能体
+      - 多模态
     links:
       - label: InfiGUIAgent
         href: https://github.com/InfiXAI/InfiGUIAgent
@@ -24,16 +32,22 @@ items:
   - id: deskcraft
     name: DeskCraft
     period: 2025–present
+    periodZh: 2025 至今
     image: deskcraft.png
     imageAlt: DeskCraft benchmark overview
     desc: >-
       A desktop GUI benchmark for professional workflows and human-in-the-loop
       collaboration, with 538 executable tasks across office, design, video,
       audio, 3D, and multi-app software.
+    descZh: 面向专业工作流与人机协作的桌面 GUI 基准，包含 538 个可执行任务，覆盖办公、设计、视频、音频、3D 及多应用协同等场景。
     tags:
       - Computer Use
       - Benchmark
       - Agents
+    tagsZh:
+      - 电脑操作
+      - 基准测试
+      - 智能体
     links:
       - label: GitHub
         href: https://github.com/mrwwk/DeskCraft
@@ -42,6 +56,7 @@ items:
   - id: video-production-buddy
     name: Video Production Buddy
     period: 2026–present
+    periodZh: 2026 至今
     image: video-production-buddy.jpg
     imageAlt: Video Production Buddy
     desc: >-
@@ -49,9 +64,13 @@ items:
       agents into video production experts, with brief clarification, proposal
       gates, asset generation, composition, and review before expensive
       generation runs.
+    descZh: 开源的 AI 视频制作助手，可将通用智能体转化为专业的视频制作专家：在进入高成本的生成环节之前，依次完成需求澄清、方案确认、素材生成、合成与审校。
     tags:
       - Content Production
       - Agents
+    tagsZh:
+      - 内容创作
+      - 智能体
     links:
       - label: GitHub
         href: https://github.com/video-production-buddy/video-production-buddy

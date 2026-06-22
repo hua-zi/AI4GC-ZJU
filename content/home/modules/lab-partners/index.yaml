@@ -1,5 +1,6 @@
 type: partners
 title: Collaborators & Partners
+titleZh: 合作伙伴
 items:
   - id: ant-group
     kind: company

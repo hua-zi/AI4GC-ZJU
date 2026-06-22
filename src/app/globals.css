@@ -682,6 +682,53 @@ button,
   border-bottom-color: var(--color-brand);
 }
 
+.site-lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) + 1px) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+  color: var(--color-muted-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-smooth),
+    color var(--duration-fast) var(--ease-smooth);
+}
+
+.site-lang-toggle:hover,
+.site-lang-toggle:focus-visible {
+  border-color: var(--color-brand);
+}
+
+.site-lang-toggle__option {
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.site-lang-toggle__option--active {
+  color: var(--color-brand);
+}
+
+.site-lang-toggle__divider {
+  width: 1px;
+  height: 0.75em;
+  background: var(--color-border);
+}
+
+.site-nav__lang-toggle {
+  margin-left: var(--space-1);
+}
+
+@media (min-width: 768px) {
+  .site-nav__lang-toggle {
+    margin-left: var(--space-2);
+  }
+}
+
 .site-hero {
   width: 100%;
   background: var(--color-surface);

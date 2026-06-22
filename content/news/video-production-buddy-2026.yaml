@@ -1,11 +1,14 @@
 date: Jun 2026
 title: Video Production Buddy — an open-source AI video production agent
+titleZh: Video Production Buddy：开源的 AI 视频制作智能体
 type: Open Source
+typeZh: 开源
 desc: >-
   We open-sourced Video Production Buddy: an AI studio that turns general-purpose
   agents into video production experts — guiding the brief, proposal gates, asset
   generation, composition, and review before committing to expensive generation
   runs.
+descZh: 我们开源了 Video Production Buddy——一个将通用智能体转化为视频制作专家的 AI 工作室：在进入高成本生成环节之前，依次完成需求引导、方案确认、素材生成、合成与审校。
 featured: true
 image: /home-assets/lab-projects/video-production-buddy.jpg
 imageAlt: Video Production Buddy AI video production studio

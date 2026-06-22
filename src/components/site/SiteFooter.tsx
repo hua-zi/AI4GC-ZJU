@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { pick, useLang } from "@/lib/i18n/language-context";
 import type { SiteConfig } from "@/types/lab";
 
-type SiteFooterProps = Pick<SiteConfig, "name" | "tagline" | "nav" | "footer">;
+type SiteFooterProps = Pick<SiteConfig, "name" | "tagline" | "taglineZh" | "nav" | "footer">;
 
-export default function SiteFooter({ name, tagline, nav, footer }: SiteFooterProps) {
+export default function SiteFooter({ name, tagline, taglineZh, nav, footer }: SiteFooterProps) {
+  const { lang } = useLang();
+  const activeTagline = pick(lang, tagline, taglineZh);
+
   return (
     <footer className="site-footer">
       <div className="site-container site-footer__inner">
@@ -12,7 +18,7 @@ export default function SiteFooter({ name, tagline, nav, footer }: SiteFooterPro
             <Link href="/" className="site-footer__name">
               {name}
             </Link>
-            {tagline ? <p className="site-footer__tagline">{tagline}</p> : null}
+            {activeTagline ? <p className="site-footer__tagline">{activeTagline}</p> : null}
           </div>
 
           <nav className="site-footer__nav" aria-label="Footer navigation">
@@ -20,7 +26,7 @@ export default function SiteFooter({ name, tagline, nav, footer }: SiteFooterPro
               {nav.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="site-footer__nav-link">
-                    {link.label}
+                    {pick(lang, link.label, link.labelZh)}
                   </Link>
                 </li>
               ))}

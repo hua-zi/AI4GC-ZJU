@@ -1,6 +1,7 @@
 ---
 type: prose
 title: Who we are
+titleZh: 关于我们
 ---
 
 Welcome to AI4GC Lab at Zhejiang University, led by [Shengyu Zhang](/shengyu-zhang). We build efficient, deployable multimodal AI—compact multimodal LLMs and computer-use agents, accelerated image and video generation, and the device–cloud systems that carry them out of the datacenter and onto real phones and computers. Today's foundation models are remarkably capable yet costly in computation, memory, and energy, which keeps much of their power locked inside the cloud.

@@ -31,9 +31,11 @@ export default function NewsListItem({
   const links = getNewsLinks(item);
   const imageSrc = resolveNewsImage(item.image);
   const hasMedia = Boolean(imageSrc);
-  const typeSlug = item.type
-    ? item.type.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
-    : undefined;
+  const typeSlug =
+    item.typeSlug ??
+    (item.type
+      ? item.type.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+      : undefined);
 
   return (
     <article

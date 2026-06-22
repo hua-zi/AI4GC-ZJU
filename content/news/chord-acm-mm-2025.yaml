@@ -1,11 +1,14 @@
 date: Jul 2025
 title: CHORD accepted to ACM MM 2025
+titleZh: CHORD 被 ACM MM 2025 接收
 type: Paper
+typeZh: 论文
 featured: true
 desc: >-
   CHORD customizes a hybrid-precision on-device recommendation model for each
   instance, achieving personalized, resource-adaptive deployment in a single
   forward pass.
+descZh: CHORD 为每条样本量身定制混合精度的端侧推荐模型，仅需单次前向计算即可实现个性化、资源自适应的部署。
 image: /blog-assets/chord-acm-mm-2025/chord-thumb.png
 imageAlt: Overview of CHORD device-cloud mixed-precision quantization
 links:

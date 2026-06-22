@@ -179,6 +179,25 @@ Slug 逻辑：`src/lib/content/slug.ts`。
 
 ## 首页 `content/home/`
 
+### 中英文切换（首页双语）
+
+首页支持 EN / 中文 切换：导航栏右侧有一个语言开关，**默认显示英文**，用户切换后选择会记在浏览器里（localStorage `ai4gc-lang`），并同步整个首页、导航栏和页脚的文字。切换是纯前端的，不影响 SEO（服务端始终渲染英文）。
+
+中文文案以「英文字段 + 对应 `…Zh` 字段」的形式并排写在同一个内容文件里，缺省时自动回退到英文。可用的 `…Zh` 字段：
+
+| 位置 | 英文字段 → 中文字段 |
+| --- | --- |
+| `site.yaml` | `tagline` → `taglineZh`；每个 `nav` 项 `label` → `labelZh` |
+| `hero.yaml` | `title`/`subtitle`/`kicker` → `titleZh`/`subtitleZh`/`kickerZh`；`actions[].label` → `labelZh` |
+| 各 module | `title` → `titleZh` |
+| `research-directions.yaml` | 每个 item `label`/`content` → `labelZh`/`contentZh`（`contentZh` 里保留同样的 `[方法名](href)` 链接标记，只翻译正文） |
+| `lab-projects/index.yaml` | 每个项目 `desc`/`period` → `descZh`/`periodZh`；`tags` → `tagsZh`（**与 `tags` 一一对应**，否则主题筛选会错乱） |
+| `lab-news.yaml` | `loadMore.label` → `loadMore.labelZh` |
+| `who-we-are/`（prose） | frontmatter 加 `titleZh`；中文正文放在同目录的 `index.zh.md`（只写正文，无需 frontmatter） |
+| `content/news/*.yaml` | `title`/`desc`/`type` → `titleZh`/`descZh`/`typeZh`（首页新闻徽章颜色仍按英文 `type` 取色，中文只改显示文字） |
+
+项目名、合作方名、`AI4GC Lab` 等专有名词保持英文。新增新闻若未写 `…Zh`，中文模式下该条会回退显示英文，不会报错。
+
 ### `hero.yaml`
 
 

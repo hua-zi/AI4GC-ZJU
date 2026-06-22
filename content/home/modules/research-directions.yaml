@@ -11,11 +11,16 @@
 #   links:
 #     - label: Read the blog
 #       href: /blog/your-post-folder
+#
+# Chinese fields (titleZh / labelZh / contentZh) are shown when the site language is 中文.
+# Keep each contentZh on a single line and reuse the same [Method](href) tokens — only translate the prose.
 type: highlights
 title: Research directions
+titleZh: 研究方向
 items:
   - id: fine-tuning-small-mllms-agents
     label: Fine-tuning Small MLLMs / Agents
+    labelZh: 微调小型多模态模型 / 智能体
     content: >-
       How small can a multimodal agent be and still reason, reflect, and act
       reliably on real interfaces? Our InfiGUI line turns compact GUI agents from
@@ -29,8 +34,10 @@ items:
       collapsing, through adaptive policy optimization
       ([AdaPO](/publications?focus=rollingstonegathersno2026)) and proposer–critic
       co-evolution ([Propose-then-Critic](/publications?focus=measuretwiceclickonce2026)).
+    contentZh: 一个小型的多模态智能体如何在真实界面上保持稳健的推理、反思与操作能力？InfiGUI 系列致力于推动轻量级 GUI 智能体从被动响应迈向主动认知——[InfiGUIAgent](/publications?focus=infiguiagentmultimodalgeneralistgui2026) 内建推理与反思机制，构成通用 GUI 智能体基座；[InfiGUI-R1](/publications?focus=infiguir1advancingmultimodal2025) 借助强化学习习得逐步规划能力，并具备错误回溯与自我修正机制；[InfiGUI-G1](/publications?focus=infiguig1advancinggui2026) 则通过自适应探索策略，显著提升界面元素定位精度。在训练层面，我们探索小模型的持续优化与稳定性保障，提出自适应策略优化方法 [AdaPO](/publications?focus=rollingstonegathersno2026)，以及“先提议、后批判”的协同进化范式 [Propose-then-Critic](/publications?focus=measuretwiceclickonce2026)。
   - id: efficient-text-to-image-video
     label: Efficient Text-to-Image / Video
+    labelZh: 高效的图像 / 视频生成
     content: >-
       Visual generation is expensive — can we make it faster without visibly
       trading away quality? We target the redundancy inside the generation process
@@ -41,8 +48,10 @@ items:
       self-calibrates video features at test time. We pair this with the data side
       of controllable editing through the reasoning-enriched
       [UnicEdit-10M](/publications?focus=unicedit10mdatasetbenchmark2026) benchmark.
+    contentZh: 视觉生成任务对算力消耗巨大——能否在视觉质量几乎无感知损失的前提下实现显著加速？我们的核心思路是直击生成流程中的冗余计算，而非重新训练模型：[CIAR](/publications?focus=ciarintervalbasedcollaborative2026) 将图像划分为多个区间进行协同解码，[NaviCache](/publications?focus=navicachetesttimeself2026) 在推理阶段动态缓存视频特征并实施实时自校准。在数据层面，我们构建了带有推理标注的可控编辑基准数据集 [UnicEdit-10M](/publications?focus=unicedit10mdatasetbenchmark2026)。
   - id: mllm-kv-cache-optimization
     label: MLLM KV-cache Optimization
+    labelZh: 多模态大模型 KV 缓存优化
     content: >-
       Long multimodal contexts make the KV cache the real memory bottleneck — but
       not every token deserves to stay. Our idea is to decide what to evict by
@@ -52,8 +61,10 @@ items:
       cross-calibrates across audio and video, and
       [RetentiveKV](/publications?focus=retentivekvstatespace2026) adds a state-space
       memory for uncertainty-aware eviction.
+    contentZh: 随着多模态上下文长度增长，KV 缓存迅速成为内存瓶颈——但并非所有 token 都具备同等保留价值。我们提出基于模态特性与预测不确定性的动态筛选机制，突破传统注意力分数单一维度的局限：[MadaKV](/publications?focus=madakvadaptivemodalityperception2025) 实现跨模态的自适应感知与差异化处理，[AccKV](/publications?focus=acckvtowardsefficientaudio2026) 在音频与视频表征之间建立相互校准机制，[RetentiveKV](/publications?focus=retentivekvstatespace2026) 则引入状态空间记忆架构，依据不确定性度量进行选择性保留。
   - id: on-device-computer-use
     label: On-device Computer Use
+    labelZh: 端侧的电脑操作
     content: >-
       We want agents that genuinely operate phones and computers under on-device
       limits — and a way to know when to trust them.
@@ -63,8 +74,10 @@ items:
       [AEIA](/publications?focus=evaluatingrobustnessmultimodalagents2025) stress-test
       such agents at scale, including against active environmental injection
       attacks.
+    contentZh: 我们期望智能体能够在端侧资源受限条件下真正驾驭手机与电脑，同时建立对其可信度的准确评估。[EcoAgent](/publications?focus=ecoagentefficientdevicecloud2026) 通过端云协同分工有效降低系统开销；[Graph2Eval](/publications?focus=graph2evalautomaticmultimodaltask2026) 与 [AEIA](/publications?focus=evaluatingrobustnessmultimodalagents2025) 则对这类智能体展开大规模系统性评测，涵盖主动环境注入攻击等极端场景。
   - id: large-small-device-cloud-collaboration
     label: Large-small (Device-cloud) Model Collaboration
+    labelZh: 大小模型（端云）协作
     content: >-
       How should a powerful cloud model and a constrained on-device model share
       intelligence — and keep up with each user in real time? We migrate knowledge
@@ -77,3 +90,4 @@ items:
       and small models correct one another
       ([CoCorrRec](/publications?focus=devicecloudcollaborativecorrection2025),
       [LSC4Rec](/publications?focus=collaborationlargelanguagemodels2025)).
+    contentZh: 云端强模型与端侧轻量模型如何实现能力互通，并持续适配用户动态演化？我们实现了异构架构间的知识迁移（[MergeNet](/publications?focus=mergenetknowledgemigrationacross2025)、[CKI](/publications?focus=optimizeincompatibleparametersthrough2025)），使端侧推荐模型能够同步数据分布漂移与个性化需求（[Forward-OFA](/publications?focus=forwardonceallstructural2025)、[Persona](/publications?focus=tacklingdevicedatadistribution2025)），同时构建大小模型协同互补机制（[CoCorrRec](/publications?focus=devicecloudcollaborativecorrection2025)、[LSC4Rec](/publications?focus=collaborationlargelanguagemodels2025)）。

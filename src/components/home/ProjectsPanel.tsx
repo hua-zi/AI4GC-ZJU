@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import LinkChip from "@/components/site/LinkChip";
 import SegmentedControl from "@/components/site/SegmentedControl";
 import Tag from "@/components/site/Tag";
+import { pick, useLang } from "@/lib/i18n/language-context";
 import { cn } from "@/lib/utils";
 import { getInitials } from "@/lib/initials";
 import {
@@ -143,6 +144,7 @@ function ProjectCard({
 }
 
 export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelProps) {
+  const { lang } = useLang();
   const reduceMotion = useReducedMotion();
   const gridColumns = useProjectGridColumns();
   const tags = useMemo(() => collectTags(projects), [projects]);
@@ -151,10 +153,10 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
 
   const filterOptions = useMemo(
     () => [
-      { value: ALL_FILTER, label: "All" },
+      { value: ALL_FILTER, label: pick(lang, "All", "全部") },
       ...tags.map((tag) => ({ value: tag, label: tag })),
     ],
-    [tags],
+    [tags, lang],
   );
 
   const filteredProjects = useMemo(() => {
@@ -189,7 +191,7 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
             value={activeTag}
             options={filterOptions}
             onChange={handleTagChange}
-            ariaLabel="Filter projects by topic"
+            ariaLabel={pick(lang, "Filter projects by topic", "按主题筛选项目")}
             className="projects-panel__filters"
           />
         </div>
@@ -238,7 +240,7 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
               ease: motionEase,
             }}
             >
-              No projects match this filter.
+              {pick(lang, "No projects match this filter.", "没有符合该筛选条件的项目。")}
             </motion.p>
           )}
         </AnimatePresence>
@@ -246,7 +248,7 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
       {totalPages > 1 ? (
         <nav
           className="section-actions section-actions--pagination projects-panel__pagination"
-          aria-label="Projects pagination"
+          aria-label={pick(lang, "Projects pagination", "项目翻页")}
         >
           <button
             type="button"
@@ -254,7 +256,7 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
             disabled={!canGoPrevious}
             onClick={() => setPage((current) => current - 1)}
           >
-            Previous
+            {pick(lang, "Previous", "上一页")}
           </button>
           <span className="section-actions__page">
             {pageIndex + 1} / {totalPages}
@@ -265,7 +267,7 @@ export default function ProjectsPanel({ projects, githubStars }: ProjectsPanelPr
             disabled={!canGoNext}
             onClick={() => setPage((current) => current + 1)}
           >
-            Next
+            {pick(lang, "Next", "下一页")}
           </button>
         </nav>
       ) : null}
