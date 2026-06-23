@@ -43,6 +43,8 @@ Feel free to reach out if you're interested in collaboration!
 
 @bib papers.bib
 
+- retentivekvstatespace2026
+- purekvplugandplay2025
 - gaussiancontrolhierarchical2024
 - lookaheadanalysis2024
 - intentawaregraphlevel2024
