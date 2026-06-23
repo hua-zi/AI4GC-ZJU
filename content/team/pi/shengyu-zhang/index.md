@@ -13,6 +13,9 @@ links:
   - label: ZJU Homepage
     href: https://person.zju.edu.cn/shengyuzhang
     kind: website
+  - label: X
+    href: https://x.com/ShengyuZhangZJU
+    kind: social
   - label: Google Scholar
     href: https://scholar.google.com/citations?user=l4Dyt7EAAAAJ
     kind: social

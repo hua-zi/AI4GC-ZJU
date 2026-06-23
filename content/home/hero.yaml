@@ -22,6 +22,10 @@ actions:
     href: https://docs.qq.com/form/page/DSmJQb0d5WkdsbmZP#/fill
     external: true
 channels:
+  - label: X
+    desc: Shengyu Zhang
+    kind: link
+    href: https://x.com/ShengyuZhangZJU
   - label: WeChat
     desc: AI4GC Lab
     kind: qr
